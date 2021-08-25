@@ -1,0 +1,15 @@
+*.pyc
+*.sqlite3
+*.log
+
+.env
+.vscode
+.DS_Store
+settings_local.py
+bipp-bank/settings.py
+
+env/
+venv/
+__pycache__
+
+_public/
