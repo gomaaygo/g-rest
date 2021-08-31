@@ -1,6 +1,8 @@
+# Imports
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+from django.views.generic import ListView
 from django.contrib import messages
 
 from .models import Product
@@ -23,3 +25,7 @@ class ProductAddView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(ProductAddView, self).get_context_data(**kwargs)
         return context
+
+
+class ProductListView(ListView):
+    model = Product
