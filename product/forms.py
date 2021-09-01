@@ -1,6 +1,6 @@
 # Imports
 from django import forms
-from .models import Category, Product
+from .models import Category, Product, InputOfProduct, OutputOfProduct
 
 
 class CategoryForm(forms.ModelForm):
@@ -17,3 +17,15 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ['category', 'name', 'description',
                  'value', 'type_of_measure', 'unit_size']
+
+
+class InputOfProductForm(forms.ModelForm):
+    class Meta:
+        model = InputOfProduct
+        fields = ['product', 'quantity', 'expiration_date']
+
+
+class OutputOfProductForm(forms.ModelForm):
+    class Meta:
+        model = OutputOfProduct
+        fields = ['product', 'quantity']
