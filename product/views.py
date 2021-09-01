@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from django.contrib import messages
 
-from .models import Product, InputOfProduct, OutputOfProduct
+from .models import Product, Stock, InputOfProduct, OutputOfProduct
 from .forms import ProductForm, InputOfProductForm, OutputOfProductForm
 
 # Create your views here.
@@ -65,3 +65,7 @@ class OutputOfProductStockView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(OutputOfProductStockView, self).get_context_data(**kwargs)
         return context
+
+
+class StockListView(ListView):
+    model = Stock
