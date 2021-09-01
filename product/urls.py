@@ -9,4 +9,6 @@ app_name = "product"
 urlpatterns = [
     path('add/', views.ProductAddView.as_view(), name="add"),
     path('list/', views.ProductListView.as_view(), name="list"),
+    path('input/stock/', views.InputOfProductStockView.as_view(), name="input-product-stock"),
+    path('output/stock/', views.OutputOfProductStockView.as_view(), name="output-product-stock"),
 ]
