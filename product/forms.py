@@ -1,6 +1,6 @@
 # Imports
 from django import forms
-from .models import Category, Product, InputOfProduct, OutputOfProduct
+from .models import Category, Product, InputOfProduct, OutputOfProduct, Stock
 
 
 class CategoryForm(forms.ModelForm):
@@ -29,3 +29,10 @@ class OutputOfProductForm(forms.ModelForm):
     class Meta:
         model = OutputOfProduct
         fields = ['product', 'quantity']
+
+    def clean_quantity(self):
+        stock = Stock.objects.get(product=self.cleaned_data['product'])
+        if int(self.data['quantity']) > stock.quantity:
+            raise forms.ValidationError("Quantidade disponível: " + str(stock.quantity))
+
+        return quantity
