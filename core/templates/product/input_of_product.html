@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Data de Validade</label>
-                    {% render_field form.expiration_date class="form-control" %}
+                    {% render_field form.expiration_date class="form-control" type="date" %}
                     {% for error in form.expiration_date.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
@@ -56,4 +56,7 @@
         </form>
     </div>
     <!-- End Content Row -->
+{% endblock %}
+
+{% block scripts %}
 {% endblock %}
