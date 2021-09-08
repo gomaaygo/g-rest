@@ -64,14 +64,14 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Produtos</span>
+                        <span>Gerenciar Produtos</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <!-- <h6 class="collapse-header">Custom Components:</h6> -->
+                            <a class="collapse-item" href="{% url 'product:category-add' %}">Nova Categoria</a>
                             <a class="collapse-item" href="{% url 'product:add' %}">Novo Produto</a>
                             <a class="collapse-item" href="{% url 'product:list' %}">Listar Produtos</a>
-                            <a class="collapse-item" href="#">Adicionar Categoria</a>
                         </div>
                     </div>
                 </li>
@@ -89,13 +89,13 @@
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                         aria-expanded="true" aria-controls="collapsePages">
                         <i class="fas fa-fw fa-folder"></i>
-                        <span>Estoque</span>
+                        <span>Gerenciar Estoque</span>
                     </a>
                     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="{% url 'product:input-product-stock' %}">Entrada</a>
                             <a class="collapse-item" href="{% url 'product:output-product-stock' %}">Saída</a>
-                            <a class="collapse-item" href="{% url 'product:stock-list' %}">Ver Estoque</a>
+                            <a class="collapse-item" href="{% url 'product:stock-list' %}">Visualizar Estoque</a>
                         </div>
                     </div>
                 </li>

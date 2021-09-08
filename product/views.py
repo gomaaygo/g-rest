@@ -5,8 +5,8 @@ from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from django.contrib import messages
 
-from .models import Product, Stock, InputOfProduct, OutputOfProduct
-from .forms import ProductForm, InputOfProductForm, OutputOfProductForm
+from .models import Product, Stock, InputOfProduct, OutputOfProduct, Category
+from .forms import ProductForm, InputOfProductForm, OutputOfProductForm, CategoryForm
 
 # Create your views here.
 class ProductAddView(CreateView):
@@ -69,3 +69,21 @@ class OutputOfProductStockView(CreateView):
 
 class StockListView(ListView):
     model = Stock
+
+
+class CategoryAddView(CreateView):
+    template_name = "product/category_add.html"
+    model = Category
+    form_class = CategoryForm
+    success_url = reverse_lazy('product:add')
+    success_message = "Categoria cadastrada com sucesso!"
+
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        category = form.save(commit=False)
+        category.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryAddView, self).get_context_data(**kwargs)
+        return context

@@ -12,4 +12,5 @@ urlpatterns = [
     path('input/stock/', views.InputOfProductStockView.as_view(), name="input-product-stock"),
     path('output/stock/', views.OutputOfProductStockView.as_view(), name="output-product-stock"),
     path('stock/list/', views.StockListView.as_view(), name="stock-list"),
+    path('category/add/', views.CategoryAddView.as_view(), name="category-add"),
 ]
