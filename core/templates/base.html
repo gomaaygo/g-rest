@@ -20,6 +20,9 @@
         <!-- Custom styles for this template-->
         <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
 
+
+        <link rel="stylesheet" href="//cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
+
         {% block style %}
             <!-- Here  -->
         {% endblock %}
@@ -248,7 +251,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Bootstrap core JavaScript-->
         <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
         <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -266,6 +268,8 @@
         <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
         <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
 
+        <!-- Lib DataTables -->
+        <script src="//cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     </body>
 
     {% block scripts %}
