@@ -10,13 +10,21 @@ class CategoryForm(forms.ModelForm):
 
 
 class ProductForm(forms.ModelForm):
-    value = forms.DecimalField(label="Valor", min_value=0.0)
+    value = forms.CharField(label="Valor")
     unit_size = forms.FloatField(label="Tamanho", min_value=0)
     
     class Meta:
         model = Product
         fields = ['category', 'name', 'description',
                  'value', 'type_of_measure', 'unit_size']
+
+    def clean_value(self):
+        print(self.cleaned_data['value'])
+        value = self.cleaned_data['value'][:-3]
+        print("---")
+        print(value)
+
+        return value
 
 
 class InputOfProductForm(forms.ModelForm):
