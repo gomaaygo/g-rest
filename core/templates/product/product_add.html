@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
+                <i class="fas fa-angle-left fa-2x"></i>
+            </button>
+            Novo Produto
+        </h1>
+    </div>
+    
+    <!-- Content Row -->
+    <div class="container-fluid">
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <form method="post">{% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Nome</label>
+                    {% render_field form.name class="form-control" %}
+                    {% for error in form.name.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>
+                        Categoria
+                        <a href="{% url 'product:category-add' %}">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </label>
+                    {% render_field form.category class="form-control" %}
+                    {% for error in form.category.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Valor</label>
+                    {% render_field form.value class="form-control money2" type="text" %}
+                    {% for error in form.value.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Unidade de Medida</label>
+                    {% render_field form.type_of_measure class="form-control" %}
+                    <small class="form-text">Ex: l(litro), kg(quilo)</small>
+                    {% for error in form.type_of_measure.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Tamanho</label>
+                    {% render_field form.unit_size class="form-control" %}
+                    {% for error in form.unit_size.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Descrição</label>
+                {% render_field form.description class="form-control" %}
+                {% for error in form.description.errors %}
+                    <span class="help-inline text-danger">{{error}}</span>
+                {% endfor %}
+            </div>
+            <div class="form-group" style="text-align: right;">
+                <input type="submit" class="btn btn-primary" value="Salvar">
+            </div>
+        </form>
+    </div>
+    <!-- End Content Row -->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+            $('.money2').mask("#.##0,00", {reverse: true});
+        });
+    </script>
+{% endblock %}

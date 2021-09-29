@@ -103,7 +103,7 @@ class OutputOfProduct(models.Model):
     def save(self, *args, **kwargs):
         stock = Stock.objects.get(product=self.product)
         if self.quantity <= stock.quantity:
-            stock.quantity = stock.quantity - self.quantity
+            stock.quantity -= self.quantity
             stock.save()
         else:
             raise ValidationError("Não possui quantidade suficiente desse produto!")
