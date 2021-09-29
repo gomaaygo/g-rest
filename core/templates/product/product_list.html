@@ -19,6 +19,16 @@
             For more information about DataTables, please visit the <a target="_blank"
                 href="https://datatables.net">official DataTables documentation</a>.</p>
 
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+            
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">

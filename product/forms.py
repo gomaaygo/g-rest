@@ -1,4 +1,6 @@
 # Imports
+import re
+
 from django import forms
 from .models import Category, Product, InputOfProduct, OutputOfProduct, Stock
 
@@ -19,10 +21,7 @@ class ProductForm(forms.ModelForm):
                  'value', 'type_of_measure', 'unit_size']
 
     def clean_value(self):
-        print(self.cleaned_data['value'])
-        value = self.cleaned_data['value'][:-3]
-        print("---")
-        print(value)
+        value = int(re.sub('[^0-9]', '', self.cleaned_data['value']))/100
 
         return value
 

@@ -13,7 +13,7 @@ class ProductAddView(CreateView):
     template_name = "product/product_add.html"
     model = Product
     form_class = ProductForm
-    success_url = reverse_lazy('product:add')
+    success_url = reverse_lazy('product:list')
     success_message = "Produto cadastrado com sucesso!"
 
     def form_valid(self, form):
