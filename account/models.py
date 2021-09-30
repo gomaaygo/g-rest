@@ -6,12 +6,11 @@ class Account(User):
     TYPE_USER_CHOICES = (
         ("cashier", "Caixa"),
         ("waiter", "Garçom"),
-        ("manager", "Gestor"),
+        ("manager", "Gerente"),
     )
     type_user = models.CharField(
         "Tipo de Usuário", max_length=50, null=False, blank=False,
-         choices=TYPE_USER_CHOICES
-    )
+         choices=TYPE_USER_CHOICES)
     changed_pass = models.BooleanField("Trocou senha?", default=False)
 
     class Meta:
