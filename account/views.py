@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 
 # Create your views here.
 
 
-def sing_up(request):
+def sign_in(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -22,3 +22,8 @@ def sing_up(request):
         form = AuthenticationForm()
         
     return render(request, 'account/login.html', {'form': form})
+
+
+def log_out(request):
+    logout(request)
+    return redirect('account:signin')
