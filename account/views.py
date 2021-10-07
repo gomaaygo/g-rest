@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, TemplateView
 from django.http import HttpResponseRedirect
 
 from .models import Account
@@ -69,3 +70,14 @@ class EditAccountView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, "Conta atualizada com sucesso!")  
         return reverse('core:index')
+
+
+class NewPasswordView(LoginRequiredMixin, PasswordChangeView, TemplateView):
+    template_name = 'account/new_password.html'
+    success_url = reverse_lazy('account:signin')
+
+    def form_valid(self, form):
+        messages.success(
+            self.request, "Senha atualizada com sucesso!")
+        logout(self.request)
+        return super().form_valid(form)
