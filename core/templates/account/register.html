@@ -1,0 +1,125 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        
+    <title>Cristal - Cadastre-se</title>
+  </head>
+  <body class="bg-light">
+        <!-- Imagem e texto -->
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+            <!-- <img src="/docs/4.1/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""> -->
+            Cristal
+            </a>
+        </nav>
+        <div class="container">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="text-center mb-5 mt-5">
+                    <!-- <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
+                    <h1 class="h3 mb-3 font-weight-normal">Nova Conta</h1>
+                    {% if form.errors %}
+                    <div>
+                        <div class="alert alert-danger">
+                            Falha no cadastro! Tente novamente!
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Nome</label>
+                            {% render_field form.first_name class="form-control" %}
+                            {% for error in form.first_name.errors %}
+                                <span class="help-inline text-danger">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label>Sobrenome</label>
+                            {% render_field form.last_name class="form-control" %}
+                            {% for error in form.last_name.errors %}
+                                <span class="help-inline text-danger">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    {% render_field form.email class="form-control" %}
+                    {% for error in form.email.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Usuário</label>
+                            {% render_field form.username class="form-control" %}
+                            {% for error in form.username.errors %}
+                                <span class="help-inline text-danger">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label>Tipo de Usuário</label>
+                            {% render_field form.type_user class="form-control" %}
+                            {% for error in form.type_user.errors %}
+                                <span class="help-inline text-danger">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Senha</label>
+                            {% render_field form.password class="form-control" %}
+                            {% for error in form.password.errors %}
+                                <span class="help-inline text-danger">{{error}}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <label>Confirmar Senha</label>
+                            {% render_field form.confirm_password class="form-control" %}
+                            {% for error in form.confirm_password.errors %}
+                                <span class="help-inline text-danger">{{error}}</span>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar</button>
+                <hr>
+                <div class="text-center">
+                    <a class="small" href="{% url 'account:signin' %}">Faça login ao invés disso!</a>
+                </div>
+                <div>
+                    <p class="mt-5 mb-3 text-muted text-center"><span>Copyright &copy; Maiury S. Garcia 2021</span></p>
+                </div>
+            </form>
+        </div>
+
+     
+    
+    
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>
+
