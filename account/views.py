@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
+from django.views.generic import UpdateView
 from django.http import HttpResponseRedirect
 
 from .models import Account
@@ -57,3 +59,13 @@ class AccountCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('account:signin')
+
+
+class EditAccountView(LoginRequiredMixin, UpdateView):
+    model = Account
+    fields = ['first_name', 'last_name', 'username', 'email']
+    template_name = 'account/edit_account.html'
+
+    def get_success_url(self):
+        messages.success(self.request, "Conta atualizada com sucesso!")  
+        return reverse('core:index')
