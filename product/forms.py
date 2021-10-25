@@ -42,4 +42,4 @@ class OutputOfProductForm(forms.ModelForm):
         if int(self.data['quantity']) > stock.quantity:
             raise forms.ValidationError("Quantidade disponível: " + str(stock.quantity))
 
-        return quantity
+        return self.data['quantity']
