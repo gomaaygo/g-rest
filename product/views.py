@@ -4,12 +4,14 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from django.contrib import messages
+from account.permissions import AccountAccessMixin
 
 from .models import Product, Stock, InputOfProduct, OutputOfProduct, Category
 from .forms import ProductForm, InputOfProductForm, OutputOfProductForm, CategoryForm
 
 # Create your views here.
-class ProductAddView(CreateView):
+class ProductAddView(AccountAccessMixin, CreateView):
+    permission_required = 'can_add_product'
     template_name = "product/product_add.html"
     model = Product
     form_class = ProductForm
