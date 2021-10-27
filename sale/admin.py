@@ -5,6 +5,7 @@ from .models import Card, ItemSale, Sale
 # Register your models here.
 class CardModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'status',]
+    ordering = ('pk',)
 
 class ItemSaleModelAdmin(admin.ModelAdmin):
     list_display = ['product', 'quantity', 'unitary_value', 'total']
