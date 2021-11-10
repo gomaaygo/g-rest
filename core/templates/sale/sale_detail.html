@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
+                <i class="fas fa-angle-left fa-2x"></i>
+            </button>
+            Ficha {{sale.card.pk}}
+        </h1>
+    </div>
+    
+    <!-- Content Row -->
+    <div class="container-fluid">
+
+        <!-- Overflow Hidden -->
+        <div class="card mb-4">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary">Ficha</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="m-0 font-weight-bold text-gray">Número: {{sale.card.pk}}</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="m-0 font-weight-bold text-gray">Status: {{sale.get_status_display}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-6">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="m-0 font-weight-bold text-primary">Itens da Venda</h5>
+                    </div>
+                    <div class="col-md-6" style="text-align: right;">
+                        <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="btable" width="100%" cellspacing="0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th title="Valor Unitário">VU</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- <tfoot class="thead-dark">
+                            <tr>
+                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Tamanho</th>
+                                <th>Valor</th>
+                            </tr>
+                        </tfoot> -->
+                        <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>{{item.product.name}}</td>
+                                    <td>{{item.quantity}}</td>
+                                    <td>R$ {{item.unitary_value}}</td>
+                                    <td>R$ {{item.total}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody> 
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- End Content Row -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var table;
+    $(document).ready(function () {
+        table = $('#btable').dataTable({
+            "dom": "l<'#myFilter'>frtip", 
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json",
+            },
+            "info": false,
+            "order": [[ 0, "desc" ]],
+            "paging": false,
+            "searching": false
+        });     
+
+        // Máscara para dinheiro
+        $('.money').mask('#.##0,00', {reverse: true});
+        
+    });
+</script>
+{% endblock %}

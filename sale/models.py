@@ -24,7 +24,7 @@ class Card(models.Model):
 class Sale(models.Model):
     STATUS_SALE = (
         ("closed", "Fechada"),
-        ("open", "Aberto"),
+        ("open", "Aberta"),
         ("canceled", "Cancelada"),
     )
     TYPE_OF_PAYMENT = (
@@ -51,7 +51,7 @@ class Sale(models.Model):
         verbose_name_plural="Vendas"
 
     def __str__(self):
-        return self.status
+        return str(self.pk)
 
 
 class ItemSale(models.Model):

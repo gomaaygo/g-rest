@@ -7,6 +7,6 @@ from sale import views
 app_name = "sale"
 
 urlpatterns = [
-    # path('start/', views.StartSaleView.as_view(), name="start-sale"),
     path('list/', views.SaleOpenListView.as_view(), name="sale-open-list"),
+    path('<int:pk>/', views.SaleDetailView.as_view(), name='sale-detail'),
 ]
