@@ -17,6 +17,15 @@
     
     <!-- Content Row -->
     <div class="container-fluid">
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
         <!-- Overflow Hidden -->
         <div class="card mb-4">
@@ -42,13 +51,53 @@
                     <div class="col-md-6">
                         <h5 class="m-0 font-weight-bold text-primary">Itens da Venda</h5>
                     </div>
+                    <!-- Button trigger modal -->
                     <div class="col-md-6" style="text-align: right;">
-                        <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item">
+                        <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item" data-toggle="modal" data-target=".bd-example-modal-lg">
                             <i class="fas fa-plus"></i>
                         </a>
                     </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Adicionar Item</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'sale:add-item-sale' sale.pk %}">{% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>Produto</label>
+                                                {% render_field form.product class="form-control" %}
+                                                {% for error in form.product.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Quantidade</label>
+                                                {% render_field form.quantity class="form-control" %}
+                                                {% for error in form.quantity.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <input type="submit" class="btn btn-primary" value="Adicionar"></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover" id="btable" width="100%" cellspacing="0">
@@ -82,6 +131,8 @@
                 </div>
             </div>
         </div>
+
+        <br>
 
     </div>
     <!-- End Content Row -->
