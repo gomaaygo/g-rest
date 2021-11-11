@@ -16,8 +16,14 @@ from .forms import SaleForm, ItemSaleForm
 
 class SaleOpenListView(ListView):
     model = Sale
-    queryset = Sale.objects.filter(status='open')
     template_name = 'sale/sale_open_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = Sale.objects.filter(status='open')
+        context['form'] = SaleForm()
+
+        return context
 
 
 class SaleDetailView(DetailView):
@@ -66,3 +72,18 @@ def add_item_sale(request, pk):
 
             messages.success(request, "Item adicionado com sucesso!")
             return redirect(reverse('sale:sale-detail', args=[sale.pk]))
+
+
+def new_sale(request):
+    card = Card.objects.get(id=request.POST['card'])
+    card.status = "not_available"
+    card.save()
+
+    item_sale = Sale.objects.create(
+        card=card
+    )
+
+    sale = Sale.objects.get(card=card, status="open")
+
+    messages.success(request, "Comanda aberta com sucesso!")
+    return redirect(reverse('sale:sale-detail', args=[sale.pk]))
