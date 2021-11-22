@@ -56,6 +56,10 @@
                         <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item" data-toggle="modal" data-target=".bd-example-modal-lg">
                             <i class="fas fa-plus"></i>
                         </a>
+
+                        <a href="#" class="btn btn-danger btn-circle btn-sm" title="Encerrar Venda" data-toggle="modal" data-target="#exampleModalCenter">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </a>
                     </div>
 
                     <!-- Modal -->
@@ -73,14 +77,14 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Produto</label>
-                                                {% render_field form.product class="form-control" %}
+                                                {% render_field form_item_sale.product class="form-control" %}
                                                 {% for error in form.product.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
                                                 {% endfor %}
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Quantidade</label>
-                                                {% render_field form.quantity class="form-control" %}
+                                                {% render_field form_item_sale.quantity class="form-control" %}
                                                 {% for error in form.quantity.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
                                                 {% endfor %}
@@ -93,6 +97,53 @@
                                     </form>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Encerrar Venda</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="{% url 'sale:sale-close' sale.pk %}">{% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Ficha</label>
+                                            <h5>{{sale.card.pk}}</h3>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Status</label>
+                                            <h5>{{sale.get_status_display}}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label>Forma de Pagamento</label>
+                                            {% render_field form_sale.type_of_payment class="form-control" %}
+                                            {% for error in form_sale.type_of_payment.errors %}
+                                                <span class="help-inline text-danger">{{error}}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label>Total</label>  
+                                            <h5 id="amountsale" class="money"></h3>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <input type="submit" class="btn btn-danger" value="Encerrar"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -123,7 +174,7 @@
                                     <td>{{item.product.name}}</td>
                                     <td>{{item.quantity}}</td>
                                     <td>R$ {{item.unitary_value}}</td>
-                                    <td>R$ {{item.total}}</td>
+                                    <td class="total">R$ {{item.total}}</td>
                                 </tr>
                             {% endfor %}
                         </tbody> 
@@ -151,11 +202,22 @@
             "order": [[ 0, "desc" ]],
             "paging": false,
             "searching": false
-        });     
-
-        // Máscara para dinheiro
-        $('.money').mask('#.##0,00', {reverse: true});
-        
+        });          
     });
+
+    // Função que calcula o valor total da conta
+    $(function(){
+        var amount = 0;
+
+        $(".total").each(function() {
+            amount = amount + parseFloat($(this).text().replace('R$','').replace(',','.'));
+            console.log(amount);
+        });
+        $("#amountsale").text(amount);
+    });
+
+    // Máscara para dinheiro
+    $('.money').mask('#.##0,00', {reverse: true});
+
 </script>
 {% endblock %}

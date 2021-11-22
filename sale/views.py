@@ -11,7 +11,7 @@ from django.contrib import messages
 
 from product.models import Product
 from .models import Sale, Card, ItemSale
-from .forms import SaleForm, ItemSaleForm
+from .forms import OpenSaleForm, ItemSaleForm, CloseSaleForm
 
 
 class SaleOpenListView(ListView):
@@ -21,7 +21,7 @@ class SaleOpenListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['object_list'] = Sale.objects.filter(status='open')
-        context['form'] = SaleForm()
+        context['form'] = OpenSaleForm()
 
         return context
 
@@ -37,7 +37,8 @@ class SaleDetailView(DetailView):
         sale = self.get_sale()
         context['sale'] = sale
         context['items'] = ItemSale.objects.filter(sale=sale.pk).order_by("-pk")
-        context['form'] = ItemSaleForm()
+        context['form_item_sale'] = ItemSaleForm()
+        context['form_sale'] = CloseSaleForm()
 
         return context
 
@@ -87,3 +88,24 @@ def new_sale(request):
 
     messages.success(request, "Comanda aberta com sucesso!")
     return redirect(reverse('sale:sale-detail', args=[sale.pk]))
+
+
+def close_sale(request, pk):
+    sale = Sale.objects.get(id=pk)
+    items = ItemSale.objects.filter(sale=sale)
+    total = 0
+
+    for item in items:
+        total = total+item.total
+
+    sale.type_of_payment = request.POST['type_of_payment']
+    sale.total = total
+    sale.status = "closed"
+    sale.save()
+
+    card = Card.objects.get(id=sale.card.pk)
+    card.status = "available"
+    card.save()
+
+    messages.success(request, "Venda encerrada com sucesso!")
+    return redirect(reverse('sale:sale-open-list'))
