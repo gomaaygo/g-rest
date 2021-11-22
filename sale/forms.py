@@ -4,7 +4,7 @@ from .models import Sale, ItemSale, Card
 
 
 class OpenSaleForm(forms.ModelForm):
-    card = forms.ChoiceField(choices=[('0', '--Selecione--')] + [(card.id, card.id) for card in Card.objects.filter(status="available").order_by("pk")])
+    card = forms.ModelChoiceField(label="card", queryset=Card.objects.filter(status="available").order_by("pk"))
 
     class Meta:
         model = Sale
