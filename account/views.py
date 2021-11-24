@@ -54,6 +54,7 @@ class AccountCreateView(CreateView):
         else:
             group = get_object_or_404(Group, name="Gerente")
 
+        self.object.password = make_password(self.request.POST["password"])
         self.object.groups.add(group)
         self.object.save()
 
