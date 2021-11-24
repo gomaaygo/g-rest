@@ -54,7 +54,7 @@
                         <span>Início</span></a>
                 </li>
 
-                {% if user.type_user == "manager" %}
+                {% if request.user.account.type_user == "manager" %}
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
@@ -85,7 +85,7 @@
 
                 {% endif %}
 
-                {% if user.type_user == "manager" or user.type_user == "cashier" %}
+                {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     ESTOQUE
@@ -103,7 +103,7 @@
                             <a class="collapse-item" href="{% url 'product:input-product-stock' %}">Entrada</a>
                             <a class="collapse-item" href="{% url 'product:output-product-stock' %}">Saída</a>
                             <a class="collapse-item" href="{% url 'product:stock-list' %}">Visualizar Estoque</a>
-                            {% if user.type_user == "manager" %}
+                            {% if request.user.account.type_user == "manager" %}
                                 <a class="collapse-item" href="#">Relatório de Entrada</a>
                                 <a class="collapse-item" href="#">Relatório de Saída</a>
                             {% endif %}
@@ -134,7 +134,7 @@
                             <!-- <a class="collapse-item" href="#">Nova Comanda</a> -->
                             <!-- <a class="collapse-item" href="#">Borders</a> -->
                             <a class="collapse-item" href="{% url 'sale:sale-open-list' %}">Listar Comandas Abertas</a>
-                            {% if user.type_user == "manager" %}
+                            {% if request.user.account.type_user == "manager" %}
                                 <a class="collapse-item" href="#">Relatório de Vendas</a>
                             {% endif %}
                         </div>
