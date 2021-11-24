@@ -11,7 +11,6 @@ from .forms import ProductForm, InputOfProductForm, OutputOfProductForm, Categor
 
 # Create your views here.
 class ProductAddView(GroupRequiredMixin, CreateView):
-    # permission_required = 'can_add_product'
     group_required = [u'Gerente']
     template_name = "product/product_add.html"
     model = Product
@@ -74,7 +73,8 @@ class StockListView(ListView):
     model = Stock
 
 
-class CategoryAddView(CreateView):
+class CategoryAddView(GroupRequiredMixin, CreateView):
+    group_required = [u'Gerente']
     template_name = "product/category_add.html"
     model = Category
     form_class = CategoryForm
