@@ -7,9 +7,17 @@
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
         <!-- Page Heading -->
-
         <h1 class="h3 mb-2 text-gray-800">
             <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
                 <i class="fas fa-angle-left fa-2x"></i>
@@ -69,14 +77,14 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="h5 font-weight-bold text-primary text-uppercase mb-1">
-                                        <a href="{% url 'sale:sale-detail' sale.pk %}">
+                                        <a href="{% url 'sale:sale-detail' sale.pk %}" title="Visualizar Comanda">
                                             Ficha {{sale.card.pk}}
                                         </a>
                                     </div>
                                     <div class="h6 mb-0 font-weight text-gray-800">R$ <span>{{sale.total}}</span></div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                                    <i class="fas fa-scroll fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>

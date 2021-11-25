@@ -34,12 +34,17 @@
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
+            {% if request.user.account.type_user == "manager" %}
+                <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
+            {% elif request.user.account.type_user == "cashier" %}
+                <ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion" id="accordionSidebar">
+            {% else %}
+                <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            {% endif %}
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
+                        <i class="fas fa-utensils"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">g-rest</div>
                 </a>
@@ -50,7 +55,7 @@
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'core:index' %}">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <i class="fas fa-home"></i>
                         <span>Início</span></a>
                 </li>
 
@@ -68,7 +73,7 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fas fa-tasks"></i>
                         <span>Gerenciar Produtos</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -126,7 +131,7 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                         aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-fw fa-wrench"></i>
+                        <i class="fas fa-paste"></i>
                         <span>Comandas</span>
                     </a>
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
@@ -175,9 +180,19 @@
                                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                     aria-label="Search" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
+                                    {% if request.user.account.type_user == "manager" %}
+                                        <button class="btn btn-dark" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    {% elif request.user.account.type_user == "cashier" %}
+                                        <button class="btn btn-secondary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </form>
@@ -229,7 +244,7 @@
                                         Editar perfil
                                     </a>
                                     <a class="dropdown-item" href="{% url 'account:new-password' %}">
-                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Alterar senha
                                     </a>
                                     <div class="dropdown-divider"></div>
