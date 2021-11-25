@@ -90,3 +90,9 @@ class CategoryAddView(GroupRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CategoryAddView, self).get_context_data(**kwargs)
         return context
+
+
+class InputOfProductListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente']
+    model = InputOfProduct
+    queryset = InputOfProduct.objects.all().order_by("-entry_date")
