@@ -13,7 +13,7 @@
             <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
                 <i class="fas fa-angle-left fa-2x"></i>
             </button>
-            Relatório de Entrada
+            Relatório de Saída
         </h1>
         <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
             For more information about DataTables, please visit the <a target="_blank"
@@ -41,25 +41,22 @@
                             <tr>
                                 <th>Produto</th>
                                 <th>Quantidade</th>
-                                <th>Data de entrada</th>
-                                <th>Data de validade</th>
+                                <th>Data de saída</th>
                             </tr>
                         </thead>
                         <!-- <tfoot class="thead-dark">
                             <tr>
                                 <th>Produto</th>
                                 <th>Quantidade</th>
-                                <th>Data de entrada</th>
-                                <th>Data de validade</th>
+                                <th>Data de saída</th>
                             </tr>
                         </tfoot> -->
                         <tbody>
-                            {% for input in object_list %}
+                            {% for output in object_list %}
                                 <tr>
-                                    <td>{{input.product}}</td>
-                                    <td>{{input.quantity}}</td>
-                                    <td>{{input.entry_date|date:"d/m/Y"}}</td>
-                                    <td>{{input.expiration_date|date:"d/m/Y"}}</td>
+                                    <td>{{output.product}}</td>
+                                    <td>{{output.quantity}}</td>
+                                    <td>{{output.departure_date|date:"d/m/Y"}}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

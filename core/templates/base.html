@@ -111,7 +111,7 @@
                             <a class="collapse-item" href="{% url 'product:stock-list' %}">Visualizar Estoque</a>
                             {% if request.user.account.type_user == "manager" %}
                                 <a class="collapse-item" href="{% url 'product:input-of-product-list' %}">Relatório de Entrada</a>
-                                <a class="collapse-item" href="#">Relatório de Saída</a>
+                                <a class="collapse-item" href="{% url 'product:output-of-product-list' %}">Relatório de Saída</a>
                             {% endif %}
                         </div>
                     </div>

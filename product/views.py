@@ -96,3 +96,9 @@ class InputOfProductListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente']
     model = InputOfProduct
     queryset = InputOfProduct.objects.all().order_by("-entry_date")
+
+
+class OutputOfProductListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente']
+    model = OutputOfProduct
+    queryset = OutputOfProduct.objects.all().order_by("-departure_date")
