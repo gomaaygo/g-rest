@@ -142,7 +142,7 @@
                             <!-- <a class="collapse-item" href="#">Borders</a> -->
                             <a class="collapse-item" href="{% url 'sale:sale-open-list' %}">Listar Comandas Abertas</a>
                             {% if request.user.account.type_user == "manager" %}
-                                <a class="collapse-item" href="#">Relatório de Vendas</a>
+                                <a class="collapse-item" href="{% url 'sale:sale-list' %}">Relatório de Vendas</a>
                             {% endif %}
                         </div>
                     </div>

@@ -12,6 +12,7 @@ from django.contrib import messages
 from product.models import Product
 from .models import Sale, Card, ItemSale
 from .forms import OpenSaleForm, ItemSaleForm, CloseSaleForm, SnackForm
+from account.permissions import GroupRequiredMixin
 
 
 class SaleOpenListView(ListView):
@@ -140,3 +141,9 @@ def close_sale(request, pk):
 
     messages.success(request, "Venda encerrada com sucesso!")
     return redirect(reverse('sale:sale-open-list'))
+
+
+class SaleListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente']
+    model = Sale
+    queryset = Sale.objects.all().order_by("-sale_date")
