@@ -54,7 +54,11 @@
                     <!-- Button trigger modal -->
                     <div class="col-md-6" style="text-align: right;">
                         <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item" data-toggle="modal" data-target=".bd-example-modal-lg">
-                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-wine-bottle"></i>
+                        </a>
+
+                        <a href="#" class="btn btn-warning btn-circle btn-sm" title="Adicionar Refeição" data-toggle="modal" data-target="#add-snack">
+                            <i class="fas fa-utensils"></i>
                         </a>
 
                         {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
@@ -136,7 +140,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <label>Total</label>  
-                                            <h5 id="amountsale" class="money"></h3>
+                                            <h5 id="amountsale"></h3>
                                         </div>
                                     </div>
                                     <div style="text-align: right;">
@@ -148,6 +152,45 @@
                         </div>
                         </div>
                     </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade bd-example-modal-lg" id="add-snack" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Adicionar Refeição</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'sale:add-snack' sale.pk %}">{% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>Refeição</label>
+                                                {% render_field form_add_snack.product class="form-control" %}
+                                                {% for error in form_add_snack.product.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Quantidade</label>
+                                                {% render_field form_add_snack.quantity_snack class="form-control" %}
+                                                {% for error in form_add_snack.quantity_snack.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <input type="submit" class="btn btn-primary" value="Adicionar"></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -174,7 +217,11 @@
                             {% for item in items %}
                                 <tr>
                                     <td>{{item.product.name}}</td>
-                                    <td>{{item.quantity}}</td>
+                                    {% if item.quantity %}
+                                        <td>{{item.quantity}}</td>
+                                    {% else  %}
+                                        <td>{{item.quantity_snack}} kg</td>
+                                    {% endif  %}
                                     <td>R$ {{item.unitary_value}}</td>
                                     <td class="total">R$ {{item.total}}</td>
                                 </tr>
@@ -213,13 +260,8 @@
 
         $(".total").each(function() {
             amount = amount + parseFloat($(this).text().replace('R$','').replace(',','.'));
-            console.log(amount);
         });
-        $("#amountsale").text(amount);
+        $("#amountsale").text(amount).mask('#.##0,00', {reverse: true});
     });
-
-    // Máscara para dinheiro
-    $('.money').mask('#.##0,00', {reverse: true});
-
 </script>
 {% endblock %}

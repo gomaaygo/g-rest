@@ -11,7 +11,7 @@ from django.contrib import messages
 
 from product.models import Product
 from .models import Sale, Card, ItemSale
-from .forms import OpenSaleForm, ItemSaleForm, CloseSaleForm
+from .forms import OpenSaleForm, ItemSaleForm, CloseSaleForm, SnackForm
 
 
 class SaleOpenListView(ListView):
@@ -39,6 +39,7 @@ class SaleDetailView(DetailView):
         context['items'] = ItemSale.objects.filter(sale=sale.pk).order_by("-pk")
         context['form_item_sale'] = ItemSaleForm()
         context['form_sale'] = CloseSaleForm()
+        context['form_add_snack'] = SnackForm()
 
         return context
 
@@ -72,6 +73,36 @@ def add_item_sale(request, pk):
             )
 
             messages.success(request, "Item adicionado com sucesso!")
+            return redirect(reverse('sale:sale-detail', args=[sale.pk]))
+
+
+def add_snack(request, pk):
+    sale = Sale.objects.get(id=pk)
+    form_snack = SnackForm(request.POST)
+
+    if form_snack.is_valid():
+        product = Product.objects.get(id=form_snack.cleaned_data['product'].pk)
+
+        try:
+            item = ItemSale.objects.get(product=product.pk, sale=sale.pk, sale__status="open")
+
+            item.quantity=item.quantity+form_snack.cleaned_data['quantity']
+            item.total=new_quantity*product.value
+            item.save()
+
+            messages.success(request, "Refeição adicionada com sucesso!")
+            return redirect(reverse('sale:sale-detail', args=[sale.pk]))
+
+        except:
+            item_sale = ItemSale.objects.create(
+                product=product,
+                quantity_snack=form_snack.cleaned_data['quantity_snack'],
+                unitary_value=product.value,
+                total=form_snack.cleaned_data['quantity_snack']*product.value,
+                sale=sale
+            )
+
+            messages.success(request, "Refeição adicionada com sucesso!")
             return redirect(reverse('sale:sale-detail', args=[sale.pk]))
 
 

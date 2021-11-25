@@ -59,8 +59,10 @@ class ItemSale(models.Model):
                 null=False, blank=False, 
                 on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name="Quantidade", 
-                        null=False, blank=False, default=0,
+                        null=True, blank=True, default=0,
                         validators=[MinValueValidator(0)])
+    quantity_snack = models.DecimalField("Quantidade (Kg/g)", decimal_places=4, max_digits=14,
+                    validators=[MinValueValidator(0.00)], null=True, blank=True)
     unitary_value = models.DecimalField("Valor Unitário", decimal_places=2, max_digits=14,
                         validators=[MinValueValidator(0.00)], null=False)
     total = models.DecimalField("Total", decimal_places=2, max_digits=14,
