@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
+                <i class="fas fa-angle-left fa-2x"></i>
+            </button>
+            Perfil
+        </h1>
+    </div>
+    
+    <!-- Content Row -->
+    <div class="container">
+        <div class="form-group" style="text-align: center;">
+            <i class="fas fa-7x fa-user-alt"></i>
+        </div>
+        <br>
+        <div class="row">
+            <!-- Earnings (Annual) Card Example -->
+            <div class="col-xl-12 col-md-6 mb-4">
+                <div class="card h-100 py-2">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col mr-sm-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Nome
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{user.first_name}} {{user.last_name}}</div>
+                            </div>
+                            <div class="col mr-sm-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Tipo de Usuário
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{user.get_type_user_display}}</div>
+                            </div>
+                        </div>
+                        {% if user.email %}
+                        <div class="row">
+                            <div class="col mr-sm-2 my-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Endereço de email
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{user.email}}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col mr-sm-2 my-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Senha
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">***********</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mr-sm-2 my-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Data de entrada
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{user.date_joined}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- End Content Row -->
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

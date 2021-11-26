@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">
+            <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
+                <i class="fas fa-angle-left fa-2x"></i>
+            </button>
+            Comandas em Aberto
+        </h1>
+
+        <div class="row">
+
+            <!-- Button trigger modal -->
+            <div class="col-md-12 mb-4" style="text-align: right;">
+                <a href="#" class="btn btn-primary btn-circle btn-sm" title="Abrir Comanda" data-toggle="modal" data-target=".bd-example-modal-lg">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Abrir Comanda</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'sale:new-sale' %}">{% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Fichas Disponíveis</label>
+                                        {% render_field form.card class="form-control" %}
+                                        {% for error in form.card.errors %}
+                                            <span class="help-inline text-danger">{{error}}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <input type="submit" class="btn btn-primary" value="Abrir"></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            {% for sale in object_list %}
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="h5 font-weight-bold text-primary text-uppercase mb-1">
+                                        <a href="{% url 'sale:sale-detail' sale.pk %}" title="Visualizar Comanda">
+                                            Ficha {{sale.card.pk}}
+                                        </a>
+                                    </div>
+                                    <div class="h6 mb-0 font-weight text-gray-800">R$ <span>{{sale.total}}</span></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-scroll fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+    
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

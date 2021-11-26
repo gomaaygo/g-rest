@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
+                <i class="fas fa-angle-left fa-2x"></i>
+            </button>
+            Ficha {{sale.card.pk}}
+        </h1>
+    </div>
+    
+    <!-- Content Row -->
+    <div class="container-fluid">
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Overflow Hidden -->
+        <div class="card mb-4">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary">Ficha</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="m-0 font-weight-bold text-gray">Número: {{sale.card.pk}}</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="m-0 font-weight-bold text-gray">Status: {{sale.get_status_display}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-6">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="m-0 font-weight-bold text-primary">Itens da Venda</h5>
+                    </div>
+                    <!-- Button trigger modal -->
+                    <div class="col-md-6" style="text-align: right;">
+                        <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item" data-toggle="modal" data-target=".bd-example-modal-lg">
+                            <i class="fas fa-wine-bottle"></i>
+                        </a>
+
+                        <a href="#" class="btn btn-warning btn-circle btn-sm" title="Adicionar Refeição" data-toggle="modal" data-target="#add-snack">
+                            <i class="fas fa-utensils"></i>
+                        </a>
+
+                        {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
+                        <a href="#" class="btn btn-danger btn-circle btn-sm" title="Encerrar Venda" data-toggle="modal" data-target="#exampleModalCenter">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Adicionar Item</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'sale:add-item-sale' sale.pk %}">{% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>Produto</label>
+                                                {% render_field form_item_sale.product class="form-control" %}
+                                                {% for error in form.product.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Quantidade</label>
+                                                {% render_field form_item_sale.quantity class="form-control" %}
+                                                {% for error in form.quantity.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <input type="submit" class="btn btn-primary" value="Adicionar"></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Encerrar Venda</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="{% url 'sale:sale-close' sale.pk %}">{% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Ficha</label>
+                                            <h5>{{sale.card.pk}}</h3>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Status</label>
+                                            <h5>{{sale.get_status_display}}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label>Forma de Pagamento</label>
+                                            {% render_field form_sale.type_of_payment class="form-control" %}
+                                            {% for error in form_sale.type_of_payment.errors %}
+                                                <span class="help-inline text-danger">{{error}}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label>Total</label>  
+                                            <h5 id="amountsale"></h3>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <input type="submit" class="btn btn-danger" value="Encerrar"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade bd-example-modal-lg" id="add-snack" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Adicionar Refeição</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'sale:add-snack' sale.pk %}">{% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>Refeição</label>
+                                                {% render_field form_add_snack.product class="form-control" %}
+                                                {% for error in form_add_snack.product.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Quantidade</label>
+                                                {% render_field form_add_snack.quantity_snack class="form-control" %}
+                                                {% for error in form_add_snack.quantity_snack.errors %}
+                                                    <span class="help-inline text-danger">{{error}}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <input type="submit" class="btn btn-primary" value="Adicionar"></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="btable" width="100%" cellspacing="0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th title="Valor Unitário">VU</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <!-- <tfoot class="thead-dark">
+                            <tr>
+                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Tamanho</th>
+                                <th>Valor</th>
+                            </tr>
+                        </tfoot> -->
+                        <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>{{item.product.name}}</td>
+                                    {% if item.quantity %}
+                                        <td>{{item.quantity}}</td>
+                                    {% else  %}
+                                        <td>{{item.quantity_snack}} kg</td>
+                                    {% endif  %}
+                                    <td>R$ {{item.unitary_value}}</td>
+                                    <td class="total">R$ {{item.total}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody> 
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+    </div>
+    <!-- End Content Row -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var table;
+    $(document).ready(function () {
+        table = $('#btable').dataTable({
+            "dom": "l<'#myFilter'>frtip", 
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json",
+            },
+            "info": false,
+            "order": [[ 0, "desc" ]],
+            "paging": false,
+            "searching": false
+        });          
+    });
+
+    // Função que calcula o valor total da conta
+    $(function(){
+        var amount = 0;
+
+        $(".total").each(function() {
+            amount = amount + parseFloat($(this).text().replace('R$','').replace(',','.'));
+        });
+        $("#amountsale").text(amount).mask('#.##0,00', {reverse: true});
+    });
+</script>
+{% endblock %}

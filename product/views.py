@@ -4,12 +4,14 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from django.contrib import messages
+from account.permissions import GroupRequiredMixin
 
 from .models import Product, Stock, InputOfProduct, OutputOfProduct, Category
 from .forms import ProductForm, InputOfProductForm, OutputOfProductForm, CategoryForm
 
 # Create your views here.
-class ProductAddView(CreateView):
+class ProductAddView(GroupRequiredMixin, CreateView):
+    group_required = [u'Gerente']
     template_name = "product/product_add.html"
     model = Product
     form_class = ProductForm
@@ -71,7 +73,8 @@ class StockListView(ListView):
     model = Stock
 
 
-class CategoryAddView(CreateView):
+class CategoryAddView(GroupRequiredMixin, CreateView):
+    group_required = [u'Gerente']
     template_name = "product/category_add.html"
     model = Category
     form_class = CategoryForm
@@ -87,3 +90,15 @@ class CategoryAddView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CategoryAddView, self).get_context_data(**kwargs)
         return context
+
+
+class InputOfProductListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente']
+    model = InputOfProduct
+    queryset = InputOfProduct.objects.all().order_by("-entry_date")
+
+
+class OutputOfProductListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente']
+    model = OutputOfProduct
+    queryset = OutputOfProduct.objects.all().order_by("-departure_date")

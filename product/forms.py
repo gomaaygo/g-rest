@@ -1,5 +1,6 @@
 # Imports
 import re
+import decimal
 
 from django import forms
 from .models import Category, Product, InputOfProduct, OutputOfProduct, Stock
@@ -22,6 +23,7 @@ class ProductForm(forms.ModelForm):
 
     def clean_value(self):
         value = int(re.sub('[^0-9]', '', self.cleaned_data['value']))/100
+        value = round(decimal.Decimal(value), 2)
 
         return value
 

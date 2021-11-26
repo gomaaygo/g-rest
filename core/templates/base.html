@@ -34,12 +34,17 @@
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
+            {% if request.user.account.type_user == "manager" %}
+                <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
+            {% elif request.user.account.type_user == "cashier" %}
+                <ul class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion" id="accordionSidebar">
+            {% else %}
+                <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            {% endif %}
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
+                        <i class="fas fa-utensils"></i>
                     </div>
                     <div class="sidebar-brand-text mx-3">g-rest</div>
                 </a>
@@ -49,24 +54,26 @@
 
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span></a>
+                    <a class="nav-link" href="{% url 'core:index' %}">
+                        <i class="fas fa-home"></i>
+                        <span>Início</span></a>
                 </li>
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
+                {% if request.user.account.type_user == "manager" %}
+
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Interface
+                    PRODUTOS
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
+                        <i class="fas fa-tasks"></i>
                         <span>Gerenciar Produtos</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -82,16 +89,19 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
+                {% endif %}
+
+                {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Addons
+                    ESTOQUE
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                         aria-expanded="true" aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-folder"></i>
+                        <i class="fas fa-cubes"></i>
                         <span>Gerenciar Estoque</span>
                     </a>
                     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -99,6 +109,41 @@
                             <a class="collapse-item" href="{% url 'product:input-product-stock' %}">Entrada</a>
                             <a class="collapse-item" href="{% url 'product:output-product-stock' %}">Saída</a>
                             <a class="collapse-item" href="{% url 'product:stock-list' %}">Visualizar Estoque</a>
+                            {% if request.user.account.type_user == "manager" %}
+                                <a class="collapse-item" href="{% url 'product:input-of-product-list' %}">Relatório de Entrada</a>
+                                <a class="collapse-item" href="{% url 'product:output-of-product-list' %}">Relatório de Saída</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+                
+                {% endif %}
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    VENDAS
+                </div>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-paste"></i>
+                        <span>Comandas</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <!-- <h6 class="collapse-header">Custom Utilities:</h6> -->
+                            <!-- <a class="collapse-item" href="#">Nova Comanda</a> -->
+                            <!-- <a class="collapse-item" href="#">Borders</a> -->
+                            <a class="collapse-item" href="{% url 'sale:sale-open-list' %}">Listar Comandas Abertas</a>
+                            {% if request.user.account.type_user == "manager" %}
+                                <a class="collapse-item" href="{% url 'sale:sale-list' %}">Relatório de Vendas</a>
+                            {% endif %}
                         </div>
                     </div>
                 </li>
@@ -135,9 +180,19 @@
                                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                     aria-label="Search" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
+                                    {% if request.user.account.type_user == "manager" %}
+                                        <button class="btn btn-dark" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    {% elif request.user.account.type_user == "cashier" %}
+                                        <button class="btn btn-secondary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </form>
@@ -180,7 +235,7 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="userDropdown">
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{% url 'account:account-detail' request.user.pk %}">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </a>
@@ -189,7 +244,7 @@
                                         Editar perfil
                                     </a>
                                     <a class="dropdown-item" href="{% url 'account:new-password' %}">
-                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Alterar senha
                                     </a>
                                     <div class="dropdown-divider"></div>

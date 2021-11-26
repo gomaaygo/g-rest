@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView
@@ -9,6 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
 from django.views.generic import UpdateView, TemplateView
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import Group
+from django.views.generic.detail import DetailView
 
 from .models import Account
 from .forms import AccountForm
@@ -44,18 +46,20 @@ class AccountCreateView(CreateView):
     form_class = AccountForm
 
     def form_valid(self, form):
-        data = form.cleaned_data        
-        account = Account.objects.create(
-            username=form.cleaned_data['username'],
-            first_name=form.cleaned_data['first_name'],
-            last_name=form.cleaned_data['last_name'],
-            password=make_password(form.cleaned_data['confirm_password']),
-            type_user=form.cleaned_data['type_user'],
-            email=form.cleaned_data['email'],
-            is_active=False)
+        super().form_valid(form)
+
+        if self.object.type_user == "cashier":
+            group = get_object_or_404(Group, name="Caixa")
+        elif self.object.type_user == "waiter":
+            group = get_object_or_404(Group, name="Garçom")
+        else:
+            group = get_object_or_404(Group, name="Gerente")
+
+        self.object.password = make_password(self.request.POST["password"])
+        self.object.groups.add(group)
+        self.object.save()
 
         messages.success(self.request, "Cadastro realizado com sucesso!")            
-            
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
@@ -81,3 +85,15 @@ class NewPasswordView(LoginRequiredMixin, PasswordChangeView, TemplateView):
             self.request, "Senha atualizada com sucesso!")
         logout(self.request)
         return super().form_valid(form)
+
+
+class AccountDetailView(DetailView):
+    model = Account
+
+    def get_account(self):
+        return Account.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.get_account()
+        return context
