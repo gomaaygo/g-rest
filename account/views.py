@@ -10,6 +10,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic import UpdateView, TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import Group
+from django.views.generic.detail import DetailView
 
 from .models import Account
 from .forms import AccountForm
@@ -84,3 +85,15 @@ class NewPasswordView(LoginRequiredMixin, PasswordChangeView, TemplateView):
             self.request, "Senha atualizada com sucesso!")
         logout(self.request)
         return super().form_valid(form)
+
+
+class AccountDetailView(DetailView):
+    model = Account
+
+    def get_account(self):
+        return Account.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.get_account()
+        return context
