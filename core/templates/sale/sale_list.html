@@ -32,7 +32,7 @@
                 <div id="myFilter" class="form-group">
                     <form>
                         <div class="form-row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="mb-2 font-weight-bold text-primary">Relatório</label>
                                 <select id="select1" class="form-control form-control-sm">
                                     <option value="*">--- Selecione uma opção ---</option>
@@ -40,11 +40,20 @@
                                     <option value="month">Mensal (Atual)</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <label class="mb-2 font-weight-bold text-primary">Tipo de Pagamento</label>
+                                <select id="select2" class="form-control form-control-sm">
+                                    <option value="*">--- Selecione uma opção ---</option>
+                                    <option value="Cartão">Cartão</option>
+                                    <option value="Dinheiro">Dinheiro</option>
+                                    <option value="Pix">Pix</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
                                 <label class="mb-2 font-weight-bold text-primary">Início</label>
                                 <input type="date" id="min" class="form-control form-control-sm  date-range-filter" placeholder="Início">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="mb-2 font-weight-bold text-primary">Fim</label>
                                 <input type="date" id="max" class="form-control form-control-sm date-range-filter" placeholder="Fim">
                             </div>
@@ -107,11 +116,11 @@
             });
         } );
 
-        $("#mainContainer").on("change", "#selectt", function () {
+        $("#mainContainer").on("change", "#select1", function () {
             table.fnDraw();
         });
 
-        // Busca na tabela por dia e mês
+    // Busca na tabela por dia e mês
         $.fn.dataTable.ext.search.push(
         function (settings, data) {
             var status = $("#select1").val();
@@ -144,6 +153,29 @@
                 return true;
             }
         });
+
+        // Busca na tabela por tipo de pagamento
+        $.fn.dataTable.ext.search.push(
+        function (settings, data) {
+            var type = $("#select2").val();
+            col_type_of_payment = data[3] || "";
+
+            if (type != "*"){
+                if(col_type_of_payment == type){
+                    return true;
+                }else{
+                    return false;
+                }  
+            }
+            else {
+                return true;
+            }
+        });
+
+        $("#mainContainer").on("change", "#select2", function () {
+            table.fnDraw();
+        });
+    
 
     // Busca na tabela por intervalo
         $.fn.dataTable.ext.search.push(
