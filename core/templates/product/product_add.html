@@ -28,7 +28,7 @@
         {% endif %}
         <form method="post">{% csrf_token %}
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-2">
                     <label>Nome</label>
                     {% render_field form.name class="form-control" %}
                     {% for error in form.name.errors %}
@@ -38,7 +38,7 @@
                 <div class="form-group col-md-2">
                     <label>
                         Categoria
-                        <a href="{% url 'product:category-add' %}">
+                        <a href="{% url 'product:category-add' %}" title="Adicionar Categoria"
                             <i class="fas fa-plus"></i>
                         </a>
                     </label>
@@ -57,7 +57,7 @@
                 <div class="form-group col-md-2">
                     <label>Unidade de Medida</label>
                     {% render_field form.type_of_measure class="form-control" %}
-                    <small class="form-text">Ex: l(litro), kg(quilo)</small>
+                    <small class="form-text">Ex: l(litro), kg(quilo), g(grama), ml(mililitro)</small>
                     {% for error in form.type_of_measure.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
@@ -66,6 +66,14 @@
                     <label>Tamanho</label>
                     {% render_field form.unit_size class="form-control" %}
                     {% for error in form.unit_size.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Quantidade Mínima</label>
+                    {% render_field form.quantity_min class="form-control" %}
+                    <small class="form-text">Obs: Para futaramente notificar alerta. Em caso de refeição e prato, deixar campo em branco.</small>
+                    {% for error in form.quantity_min.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
                 </div>

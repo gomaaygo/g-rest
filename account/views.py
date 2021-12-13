@@ -11,12 +11,14 @@ from django.views.generic import UpdateView, TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import Group
 from django.views.generic.detail import DetailView
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Account
 from .forms import AccountForm
 
 # Create your views here.
 
+@csrf_exempt
 def sign_in(request):
     if request.method == "POST":
         username = request.POST["username"]

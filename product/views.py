@@ -11,7 +11,7 @@ from .forms import ProductForm, InputOfProductForm, OutputOfProductForm, Categor
 
 # Create your views here.
 class ProductAddView(GroupRequiredMixin, CreateView):
-    group_required = [u'Gerente']
+    group_required = [u'Gerente', u'Caixa']
     template_name = "product/product_add.html"
     model = Product
     form_class = ProductForm
@@ -22,6 +22,11 @@ class ProductAddView(GroupRequiredMixin, CreateView):
         messages.success(self.request, self.success_message)
         product = form.save(commit=False)
         product.save()
+        if product.category.name != "Refeição":
+            stock = Stock.objects.create(
+                product=Product.objects.get(pk=product.pk),
+                quantity_min=form.cleaned_data['quantity_min'],
+            )
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -33,7 +38,8 @@ class ProductListView(ListView):
     model = Product
 
 
-class InputOfProductStockView(CreateView):
+class InputOfProductStockView(GroupRequiredMixin, CreateView):
+    group_required = [u'Gerente', u'Caixa']
     template_name = "product/input_of_product.html"
     model = InputOfProduct
     form_class = InputOfProductForm
@@ -51,7 +57,8 @@ class InputOfProductStockView(CreateView):
         return context
 
 
-class OutputOfProductStockView(CreateView):
+class OutputOfProductStockView(GroupRequiredMixin, CreateView):
+    group_required = [u'Gerente', u'Caixa']
     template_name = "product/output_of_product.html"
     model = OutputOfProduct
     form_class = OutputOfProductForm
@@ -69,12 +76,13 @@ class OutputOfProductStockView(CreateView):
         return context
 
 
-class StockListView(ListView):
+class StockListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente', u'Caixa'] 
     model = Stock
 
 
 class CategoryAddView(GroupRequiredMixin, CreateView):
-    group_required = [u'Gerente']
+    group_required = [u'Gerente', u'Caixa']
     template_name = "product/category_add.html"
     model = Category
     form_class = CategoryForm
@@ -93,12 +101,12 @@ class CategoryAddView(GroupRequiredMixin, CreateView):
 
 
 class InputOfProductListView(GroupRequiredMixin, ListView):
-    group_required = [u'Gerente']
+    group_required = [u'Gerente', u'Caixa']
     model = InputOfProduct
     queryset = InputOfProduct.objects.all().order_by("-entry_date")
 
 
 class OutputOfProductListView(GroupRequiredMixin, ListView):
-    group_required = [u'Gerente']
+    group_required = [u'Gerente', u'Caixa']
     model = OutputOfProduct
     queryset = OutputOfProduct.objects.all().order_by("-departure_date")

@@ -15,11 +15,12 @@ class CategoryForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     value = forms.CharField(label="Valor")
     unit_size = forms.FloatField(label="Tamanho", min_value=0)
+    quantity_min = forms.IntegerField(label="Quantidade Mínima", min_value=0, required=False)
     
     class Meta:
         model = Product
         fields = ['category', 'name', 'description',
-                 'value', 'type_of_measure', 'unit_size']
+                 'value', 'type_of_measure', 'unit_size', 'quantity_min']
 
     def clean_value(self):
         value = int(re.sub('[^0-9]', '', self.cleaned_data['value']))/100
