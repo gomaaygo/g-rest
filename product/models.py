@@ -16,6 +16,12 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    TYPE_OF_MEASURE = (
+        ("kg", "Quilograma"),
+        ("ml", "Mililitro"),
+        ("l", "Litro"),
+        ("g", "Grama"),
+    )
     category = models.ForeignKey(Category, verbose_name=("Categoria"), 
                     null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField("Nome", max_length=200, null=False, blank=False)
@@ -23,7 +29,7 @@ class Product(models.Model):
     value = models.DecimalField("Valor", decimal_places=2, max_digits=14,
                         validators=[MinValueValidator(0.00)], null=False)
     type_of_measure = models.CharField("Unidade de Medida", max_length=2, 
-                        null=True, blank=True)
+                        null=True, blank=True, choices=TYPE_OF_MEASURE)
     unit_size = models.FloatField("Tamanho da Unidade", null=True, 
                         blank=True, validators=[MinValueValidator(0)])
 
