@@ -15,9 +15,6 @@
             </button>
             Relatório de Vendas
         </h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank"
-                href="https://datatables.net">official DataTables documentation</a>.</p>
 
         {% if messages %}
         <div>
@@ -30,13 +27,34 @@
         {% endif %}
             
         <!-- DataTales Example -->
-        <div class="card shadow mb-4">
+        <div class="card shadow mb-4" id="mainContainer">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Adicionar Filtros aqui</h6>
+                <div id="myFilter" class="form-group">
+                    <form>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <label class="mb-2 font-weight-bold text-primary">Relatório</label>
+                                <select id="select1" class="form-control form-control-sm">
+                                    <option value="*">--- Selecione uma opção ---</option>
+                                    <option value="today">Diário</option>
+                                    <option value="month">Mensal (Atual)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="mb-2 font-weight-bold text-primary">Início</label>
+                                <input type="date" id="min" class="form-control form-control-sm  date-range-filter" placeholder="Início">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="mb-2 font-weight-bold text-primary">Fim</label>
+                                <input type="date" id="max" class="form-control form-control-sm date-range-filter" placeholder="Fim">
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-hover" id="bTable" width="100%" cellspacing="0">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Data da Venda</th>
@@ -77,13 +95,84 @@
 
 {% block scripts %}
     <script>
+        var table;
+        
         $(document).ready( function () {
-            $('#dataTable').DataTable({
+            table = $('#bTable').dataTable({
+                "dom": "l<'#myFilter'>frtip", 
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json",
                 },
                 "info": false,
             });
         } );
+
+        $("#mainContainer").on("change", "#selectt", function () {
+            table.fnDraw();
+        });
+
+        // Busca na tabela por dia e mês
+        $.fn.dataTable.ext.search.push(
+        function (settings, data) {
+            var status = $("#select1").val();
+            col_date_input = data[0] || "";
+
+            // Padronizando a data de hoje no formato brasileiro
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+            today = dd + "/" + mm + "/" + yyyy;
+
+            var conc = '/' + mm + '/';
+
+            if (status == "today"){
+                if(col_date_input == today){
+                    return true;
+                }else{
+                    return false;
+                }  
+            }
+            else if (status == "month") {
+                if(col_date_input.includes(conc)){
+                    return true;
+                }else{
+                    return false;
+                }  
+            }
+            else {
+                return true;
+            }
+        });
+
+    // Busca na tabela por intervalo
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex) {
+                var col = data[0]
+
+                var min = $('#min').val();
+                var max = $('#max').val();
+
+                var col = col.split("/");
+                var col = new Date(col[2], col[1] - 1, col[0]);
+                var min = min.split('-').reverse()
+                var min = new Date(min[2], min[1] - 1, min[0]);
+                var max = max.split('-').reverse()
+                var max = new Date(max[2], max[1] - 1, max[0]);
+
+                if ((isNaN(min)) || (isNaN(max))) {
+                    return true;
+                }
+                if (col >= min && col <= max) {
+                    return true;
+                } else {
+                    return false;
+                }
+        });
+
+        $('.date-range-filter').change(function() {
+            table.fnDraw();
+        });
+
     </script>
 {% endblock %}
