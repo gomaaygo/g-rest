@@ -11,7 +11,7 @@
             <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
                 <i class="fas fa-angle-left fa-2x"></i>
             </button>
-            Novo Produto
+            Editar Produto
         </h1>
     </div>
     
@@ -28,7 +28,7 @@
         {% endif %}
         <form method="post">{% csrf_token %}
             <div class="form-row">
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-4">
                     <label>Nome</label>
                     {% render_field form.name class="form-control" %}
                     {% for error in form.name.errors %}
@@ -66,14 +66,6 @@
                     <label>Tamanho</label>
                     {% render_field form.unit_size class="form-control" %}
                     {% for error in form.unit_size.errors %}
-                        <span class="help-inline text-danger">{{error}}</span>
-                    {% endfor %}
-                </div>
-                <div class="form-group col-md-2">
-                    <label>Quantidade Mínima</label>
-                    {% render_field form.quantity_min class="form-control" %}
-                    <small class="form-text">Obs: Para futaramente notificar alerta. Em caso de refeição e prato, deixar campo em branco.</small>
-                    {% for error in form.quantity_min.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
                 </div>
