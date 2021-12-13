@@ -14,4 +14,5 @@ urlpatterns = [
     path('new', views.new_sale, name='new-sale'),
     path('<int:pk>/close', views.close_sale, name='sale-close'),
     path('list/', views.SaleListView.as_view(), name="sale-list"),
+    path('item/<int:pk>/canceled', views.canceled_item_sale, name='item-sale-canceled'),
 ]
