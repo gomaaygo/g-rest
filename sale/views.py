@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 from product.models import Product
 from .models import Sale, Card, ItemSale
@@ -45,6 +46,7 @@ class SaleDetailView(DetailView):
         return context
 
 
+@csrf_exempt
 def add_item_sale(request, pk):
     sale = Sale.objects.get(id=pk)
     form_item_sale = ItemSaleForm(request.POST)
@@ -77,6 +79,7 @@ def add_item_sale(request, pk):
             return redirect(reverse('sale:sale-detail', args=[sale.pk]))
 
 
+@csrf_exempt
 def add_snack(request, pk):
     sale = Sale.objects.get(id=pk)
     form_snack = SnackForm(request.POST)
@@ -107,6 +110,7 @@ def add_snack(request, pk):
             return redirect(reverse('sale:sale-detail', args=[sale.pk]))
 
 
+@csrf_exempt
 def new_sale(request):
     card = Card.objects.get(id=request.POST['card'])
     card.status = "not_available"
