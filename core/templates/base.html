@@ -327,8 +327,22 @@
         <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
         <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
 
-        <!-- Lib DataTables -->
-        <script src="//cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+        <!-- Plug-ins Datatables  -->
+        <!-- ### -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <!-- Moment.js: -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+        <!-- Arquivo de localidade brasileira para moment.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/pt-br.js"></script>
+        <!-- Plug-in de classificação de data final -->
+        <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+        <script>
+            // Formatando data para o padrão brasileiro
+            moment.locale('pt-br');
+            $.fn.dataTable.moment( 'L', 'pt-br' );
+        </script>
+        <!-- Fim  -->
 
         <!-- Lib Mask -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>

@@ -55,6 +55,9 @@ class Sale(models.Model):
 
 
 class ItemSale(models.Model):
+    STATUS_ITEM_SALE = (
+        ("canceled", "Cancelado"),
+    )
     product = models.ForeignKey(Product, verbose_name="Produto", 
                 null=False, blank=False, 
                 on_delete=models.CASCADE)
@@ -68,6 +71,8 @@ class ItemSale(models.Model):
     total = models.DecimalField("Total", decimal_places=2, max_digits=14,
                         validators=[MinValueValidator(0.00)], null=False, default=0)
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField("Status", max_length=50, null=True, blank=True,
+         choices=STATUS_ITEM_SALE)
 
     class Meta:
         verbose_name="Item de Venda"

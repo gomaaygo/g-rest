@@ -43,6 +43,7 @@
                                 <th>Categoria</th>
                                 <th>Tamanho</th>
                                 <th>Valor</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <!-- <tfoot class="thead-dark">
@@ -60,6 +61,7 @@
                                     <td>{{product.category}}</td>
                                     <td>{{product.unit_size}}{{product.type_of_measure}}</td>
                                     <td>R$ {{product.value}}</td>
+                                    <td style="text-align: center;"><a class="btn btn-warning btn-circle btn-sm" href="{% url 'product:edit' product.pk %}" title="Editar Produto"><i class="fas fa-edit"></i></a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

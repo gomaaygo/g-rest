@@ -203,6 +203,7 @@
                                 <th>Quantidade</th>
                                 <th title="Valor Unitário">VU</th>
                                 <th>Total</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <!-- <tfoot class="thead-dark">
@@ -224,7 +225,33 @@
                                     {% endif  %}
                                     <td>R$ {{item.unitary_value}}</td>
                                     <td class="total">R$ {{item.total}}</td>
+                                    <td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal" title="Excluir Item">
+                                        <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
                                 </tr>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Você deseja excluir esse item?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                        Pressione Excluir para deletar o item da comanda.
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <a class="btn btn-danger" href="{% url 'sale:item-sale-canceled' item.pk %}">Excluir</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+
                             {% endfor %}
                         </tbody> 
                     </table>
@@ -261,7 +288,7 @@
         $(".total").each(function() {
             amount = amount + parseFloat($(this).text().replace('R$','').replace(',','.'));
         });
-        $("#amountsale").text(amount).mask('#.##0,00', {reverse: true});
+        $("#amountsale").text(amount);
     });
 </script>
 {% endblock %}

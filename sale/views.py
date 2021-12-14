@@ -5,7 +5,7 @@ from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import CreateView
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 from django.views.generic.detail import DetailView
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -38,7 +38,7 @@ class SaleDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         sale = self.get_sale()
         context['sale'] = sale
-        context['items'] = ItemSale.objects.filter(sale=sale.pk).order_by("-pk")
+        context['items'] = ItemSale.objects.filter(sale=sale.pk).exclude(status="canceled").order_by("-pk")
         context['form_item_sale'] = ItemSaleForm()
         context['form_sale'] = CloseSaleForm()
         context['form_add_snack'] = SnackForm()
@@ -126,6 +126,7 @@ def new_sale(request):
     return redirect(reverse('sale:sale-detail', args=[sale.pk]))
 
 
+@csrf_exempt
 def close_sale(request, pk):
     sale = Sale.objects.get(id=pk)
     items = ItemSale.objects.filter(sale=sale)
@@ -151,3 +152,13 @@ class SaleListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente']
     model = Sale
     queryset = Sale.objects.all().order_by("-sale_date")
+
+
+@csrf_exempt
+def canceled_item_sale(request, pk):
+    item = ItemSale.objects.get(id=pk)
+    item.status = "canceled"
+    item.save()
+    
+    messages.success(request, "Item cancelado com sucesso!")
+    return redirect(reverse('sale:sale-detail', args=[item.sale.pk]))
