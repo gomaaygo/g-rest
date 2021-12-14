@@ -126,6 +126,7 @@ def new_sale(request):
     return redirect(reverse('sale:sale-detail', args=[sale.pk]))
 
 
+@csrf_exempt
 def close_sale(request, pk):
     sale = Sale.objects.get(id=pk)
     items = ItemSale.objects.filter(sale=sale)
@@ -153,6 +154,7 @@ class SaleListView(GroupRequiredMixin, ListView):
     queryset = Sale.objects.all().order_by("-sale_date")
 
 
+@csrf_exempt
 def canceled_item_sale(request, pk):
     item = ItemSale.objects.get(id=pk)
     item.status = "canceled"

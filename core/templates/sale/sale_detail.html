@@ -288,7 +288,7 @@
         $(".total").each(function() {
             amount = amount + parseFloat($(this).text().replace('R$','').replace(',','.'));
         });
-        $("#amountsale").text(amount).mask('#.##0,00', {reverse: true});
+        $("#amountsale").text(amount);
     });
 </script>
 {% endblock %}

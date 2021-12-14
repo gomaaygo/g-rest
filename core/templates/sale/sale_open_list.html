@@ -67,6 +67,11 @@
 
         </div>
 
+        {% if not object_list %}
+        <h1 style="text-align: center;" class="m-4 text-gray">
+            Não possui comanda aberta no momento!
+        </h1>
+       {% endif %}
 
         <div class="row">
             {% for sale in object_list %}
@@ -81,7 +86,7 @@
                                             Ficha {{sale.card.pk}}
                                         </a>
                                     </div>
-                                    <div class="h6 mb-0 font-weight text-gray-800">R$ <span>{{sale.total}}</span></div>
+                                    <!-- <div class="h6 mb-0 font-weight text-gray-800">R$ <span>{{sale.total}}</span></div> -->
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-scroll fa-2x text-gray-300"></i>
