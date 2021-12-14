@@ -25,4 +25,4 @@ python manage.py runserver
 
 ## Disponível em:
 
-https://g-rest.herokuapp.com/account/login/
+https://g-rest.herokuapp.com/
