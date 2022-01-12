@@ -203,7 +203,9 @@
                                 <th>Quantidade</th>
                                 <th title="Valor Unitário">VU</th>
                                 <th>Total</th>
-                                <th>Ações</th>
+                                {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
+                                    <th>Ações</th>
+                                {% endif %}
                             </tr>
                         </thead>
                         <!-- <tfoot class="thead-dark">
@@ -221,14 +223,16 @@
                                     {% if item.quantity %}
                                         <td>{{item.quantity}}</td>
                                     {% else  %}
-                                        <td>{{item.quantity_snack}} kg</td>
+                                        <td>{{item.quantity_snack}} g</td>
                                     {% endif  %}
                                     <td>R$ {{item.unitary_value}}</td>
                                     <td class="total">R$ {{item.total}}</td>
-                                    <td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal" title="Excluir Item">
-                                        <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
+                                    {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
+                                        <td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal" title="Excluir Item">
+                                            <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
+                                    {% endif %}
                                 </tr>
 
                                 <!-- Modal -->
