@@ -29,8 +29,9 @@ class Sale(models.Model):
     )
     TYPE_OF_PAYMENT = (
         ("money", "Dinheiro"),
-        ("card", "Cartão"),
         ("pix", "Pix"),
+        ("credit", "Crédito"),
+        ("debit", "Débito"),
     )
     card = models.ForeignKey(Card, verbose_name="Ficha", 
                 null=True, blank=False, 
