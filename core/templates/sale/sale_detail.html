@@ -34,12 +34,24 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    {% if sale.status == "open" %}
                     <div class="col-md-6">
                         <h6 class="m-0 font-weight-bold text-gray">Número: {{sale.card.pk}}</h6>
                     </div>
                     <div class="col-md-6">
                         <h6 class="m-0 font-weight-bold text-gray">Status: {{sale.get_status_display}}</h6>
                     </div>
+                    {% else %}
+                    <div class="col-md-4">
+                        <h6 class="m-0 font-weight-bold text-gray">Número: {{sale.card.pk}}</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="m-0 font-weight-bold text-gray">Status: {{sale.get_status_display}}</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="m-0 font-weight-bold text-gray">Total: {{sale.total}}</h6>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -51,6 +63,8 @@
                     <div class="col-md-6">
                         <h5 class="m-0 font-weight-bold text-primary">Itens da Venda</h5>
                     </div>
+
+                    {% if sale.status == "open" %}
                     <!-- Button trigger modal -->
                     <div class="col-md-6" style="text-align: right;">
                         <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -67,6 +81,7 @@
                         </a>
                         {% endif %}
                     </div>
+                    {% endif %}
 
                     <!-- Modal -->
                     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -204,7 +219,9 @@
                                 <th title="Valor Unitário">VU</th>
                                 <th>Total</th>
                                 {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
-                                    <th>Ações</th>
+                                    {% if sale.status == "open" %}
+                                        <th>Ações</th>
+                                    {% endif %}
                                 {% endif %}
                             </tr>
                         </thead>
@@ -228,10 +245,12 @@
                                     <td>R$ {{item.unitary_value}}</td>
                                     <td class="total">R$ {{item.total}}</td>
                                     {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
-                                        <td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal" title="Excluir Item">
-                                            <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </td>
+                                        {% if sale.status == "open" %}
+                                            <td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal" title="Excluir Item">
+                                                <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        {% endif %}
                                     {% endif %}
                                 </tr>
 
@@ -259,6 +278,7 @@
                             {% endfor %}
                         </tbody> 
                     </table>
+
                 </div>
             </div>
         </div>
