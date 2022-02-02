@@ -111,7 +111,7 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Encerrar Venda</h5>
+                            <h5 class="modal-title m-0 font-weight-bold text-primary" id="exampleModalLongTitle">Encerrar Venda</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -120,17 +120,17 @@
                                 <form method="post" action="{% url 'sale:sale-close' sale.pk %}">{% csrf_token %}
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label>Ficha</label>
+                                            <label class="m-0 font-weight-bold text-dark">Ficha</label>
                                             <h5>{{sale.card.pk}}</h3>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label>Status</label>
+                                            <label class="m-0 font-weight-bold text-dark">Status</label>
                                             <h5>{{sale.get_status_display}}</h3>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            <label>Forma de Pagamento</label>
+                                            <label class="m-0 font-weight-bold text-dark">Forma de Pagamento</label>
                                             {% render_field form_sale.type_of_payment class="form-control" %}
                                             {% for error in form_sale.type_of_payment.errors %}
                                                 <span class="help-inline text-danger">{{error}}</span>
@@ -139,8 +139,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            <label>Total</label>  
-                                            <h5 id="amountsale"></h3>
+                                            <label class="m-0 font-weight-bold text-dark">Total</label>  
+                                            <h5>R$ <span class="money2" id="amountsale"></span></h5>
                                         </div>
                                     </div>
                                     <div style="text-align: right;">
@@ -292,11 +292,13 @@
         $(".total").each(function() {
             amount = amount + parseFloat($(this).text().replace('R$','').replace(',','.'));
         });
+        amount = amount.toFixed(2)
         $("#amountsale").text(amount);
     });
 
     $(document).ready(function(){
         $('.weight').mask("#0.000", {reverse: true});
+        $('.money2').mask("#.##0,00", {reverse: true});
     });
 </script>
 {% endblock %}
