@@ -62,7 +62,7 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
-                {% if request.user.account.type_user == "manager" %}
+                {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
