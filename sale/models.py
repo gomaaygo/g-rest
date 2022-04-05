@@ -29,8 +29,9 @@ class Sale(models.Model):
     )
     TYPE_OF_PAYMENT = (
         ("money", "Dinheiro"),
-        ("card", "Cartão"),
         ("pix", "Pix"),
+        ("credit", "Crédito"),
+        ("debit", "Débito"),
     )
     card = models.ForeignKey(Card, verbose_name="Ficha", 
                 null=True, blank=False, 
@@ -64,7 +65,7 @@ class ItemSale(models.Model):
     quantity = models.PositiveIntegerField(verbose_name="Quantidade", 
                         null=True, blank=True, default=0,
                         validators=[MinValueValidator(0)])
-    quantity_snack = models.DecimalField("Quantidade (Kg/g)", decimal_places=4, max_digits=14,
+    quantity_snack = models.DecimalField("Quantidade (Kg/g)", decimal_places=3, max_digits=14,
                     validators=[MinValueValidator(0.00)], null=True, blank=True)
     unitary_value = models.DecimalField("Valor Unitário", decimal_places=2, max_digits=14,
                         validators=[MinValueValidator(0.00)], null=False)

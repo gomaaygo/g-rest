@@ -34,12 +34,24 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    {% if sale.status == "open" %}
                     <div class="col-md-6">
                         <h6 class="m-0 font-weight-bold text-gray">Número: {{sale.card.pk}}</h6>
                     </div>
                     <div class="col-md-6">
                         <h6 class="m-0 font-weight-bold text-gray">Status: {{sale.get_status_display}}</h6>
                     </div>
+                    {% else %}
+                    <div class="col-md-4">
+                        <h6 class="m-0 font-weight-bold text-gray">Número: {{sale.card.pk}}</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="m-0 font-weight-bold text-gray">Status: {{sale.get_status_display}}</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="m-0 font-weight-bold text-gray">Total: {{sale.total}}</h6>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -51,6 +63,8 @@
                     <div class="col-md-6">
                         <h5 class="m-0 font-weight-bold text-primary">Itens da Venda</h5>
                     </div>
+
+                    {% if sale.status == "open" %}
                     <!-- Button trigger modal -->
                     <div class="col-md-6" style="text-align: right;">
                         <a href="#" class="btn btn-primary btn-circle btn-sm" title="Adicionar Item" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -67,6 +81,7 @@
                         </a>
                         {% endif %}
                     </div>
+                    {% endif %}
 
                     <!-- Modal -->
                     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -111,7 +126,7 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Encerrar Venda</h5>
+                            <h5 class="modal-title m-0 font-weight-bold text-primary" id="exampleModalLongTitle">Encerrar Venda</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -120,17 +135,17 @@
                                 <form method="post" action="{% url 'sale:sale-close' sale.pk %}">{% csrf_token %}
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label>Ficha</label>
+                                            <label class="m-0 font-weight-bold text-dark">Ficha</label>
                                             <h5>{{sale.card.pk}}</h3>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label>Status</label>
+                                            <label class="m-0 font-weight-bold text-dark">Status</label>
                                             <h5>{{sale.get_status_display}}</h3>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            <label>Forma de Pagamento</label>
+                                            <label class="m-0 font-weight-bold text-dark">Forma de Pagamento</label>
                                             {% render_field form_sale.type_of_payment class="form-control" %}
                                             {% for error in form_sale.type_of_payment.errors %}
                                                 <span class="help-inline text-danger">{{error}}</span>
@@ -139,8 +154,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            <label>Total</label>  
-                                            <h5 id="amountsale"></h3>
+                                            <label class="m-0 font-weight-bold text-dark">Total</label>  
+                                            <h5>R$ <span class="money2" id="amountsale"></span></h5>
                                         </div>
                                     </div>
                                     <div style="text-align: right;">
@@ -174,8 +189,8 @@
                                                 {% endfor %}
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>Quantidade</label>
-                                                {% render_field form_add_snack.quantity_snack class="form-control" %}
+                                                <label>Quantidade (g)</label>
+                                                {% render_field form_add_snack.quantity_snack class="form-control weight" type="text" %}
                                                 {% for error in form_add_snack.quantity_snack.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
                                                 {% endfor %}
@@ -203,7 +218,11 @@
                                 <th>Quantidade</th>
                                 <th title="Valor Unitário">VU</th>
                                 <th>Total</th>
-                                <th>Ações</th>
+                                {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
+                                    {% if sale.status == "open" %}
+                                        <th>Ações</th>
+                                    {% endif %}
+                                {% endif %}
                             </tr>
                         </thead>
                         <!-- <tfoot class="thead-dark">
@@ -221,14 +240,18 @@
                                     {% if item.quantity %}
                                         <td>{{item.quantity}}</td>
                                     {% else  %}
-                                        <td>{{item.quantity_snack}} kg</td>
+                                        <td>{{item.quantity_snack}} g</td>
                                     {% endif  %}
                                     <td>R$ {{item.unitary_value}}</td>
                                     <td class="total">R$ {{item.total}}</td>
-                                    <td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal" title="Excluir Item">
-                                        <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
+                                    {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
+                                        {% if sale.status == "open" %}
+                                            <td style="text-align: center;"><button type="button" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#exampleModal" title="Excluir Item">
+                                                <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        {% endif %}
+                                    {% endif %}
                                 </tr>
 
                                 <!-- Modal -->
@@ -255,6 +278,7 @@
                             {% endfor %}
                         </tbody> 
                     </table>
+
                 </div>
             </div>
         </div>
@@ -288,7 +312,13 @@
         $(".total").each(function() {
             amount = amount + parseFloat($(this).text().replace('R$','').replace(',','.'));
         });
+        amount = amount.toFixed(2)
         $("#amountsale").text(amount);
+    });
+
+    $(document).ready(function(){
+        $('.weight').mask("0.000", {reverse: true});
+        $('.money2').mask("#.##0,00", {reverse: true});
     });
 </script>
 {% endblock %}

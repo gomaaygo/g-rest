@@ -56,11 +56,16 @@ def add_item_sale(request, pk):
 
         try:
             item = ItemSale.objects.get(product=product.pk, sale=sale.pk, sale__status="open")
-            
-            new_quantity = item.quantity+form_item_sale.cleaned_data['quantity']
 
-            item.quantity=new_quantity
-            item.total=new_quantity*product.value
+            if item.status == "canceled":
+                item.status = ""
+                item.quantity = 0
+                item.total = 0
+            
+            new_quantity = item.quantity + form_item_sale.cleaned_data['quantity']
+
+            item.quantity = new_quantity
+            item.total = new_quantity * product.value
             item.save()
 
             messages.success(request, "Item adicionado com sucesso!")
@@ -87,27 +92,16 @@ def add_snack(request, pk):
     if form_snack.is_valid():
         product = Product.objects.get(id=form_snack.cleaned_data['product'].pk)
 
-        try:
-            item = ItemSale.objects.get(product=product.pk, sale=sale.pk, sale__status="open")
+        item_sale = ItemSale.objects.create(
+            product=product,
+            quantity_snack=form_snack.cleaned_data['quantity_snack'],
+            unitary_value=product.value,
+            total=form_snack.cleaned_data['quantity_snack']*product.value,
+            sale=sale
+        )
 
-            item.quantity=item.quantity+form_snack.cleaned_data['quantity']
-            item.total=new_quantity*product.value
-            item.save()
-
-            messages.success(request, "Refeição adicionada com sucesso!")
-            return redirect(reverse('sale:sale-detail', args=[sale.pk]))
-
-        except:
-            item_sale = ItemSale.objects.create(
-                product=product,
-                quantity_snack=form_snack.cleaned_data['quantity_snack'],
-                unitary_value=product.value,
-                total=form_snack.cleaned_data['quantity_snack']*product.value,
-                sale=sale
-            )
-
-            messages.success(request, "Refeição adicionada com sucesso!")
-            return redirect(reverse('sale:sale-detail', args=[sale.pk]))
+        messages.success(request, "Refeição adicionada com sucesso!")
+        return redirect(reverse('sale:sale-detail', args=[sale.pk]))
 
 
 @csrf_exempt
@@ -129,7 +123,7 @@ def new_sale(request):
 @csrf_exempt
 def close_sale(request, pk):
     sale = Sale.objects.get(id=pk)
-    items = ItemSale.objects.filter(sale=sale)
+    items = ItemSale.objects.filter(sale=sale).exclude(status="canceled")
     total = 0
 
     for item in items:
