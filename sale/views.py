@@ -56,11 +56,16 @@ def add_item_sale(request, pk):
 
         try:
             item = ItemSale.objects.get(product=product.pk, sale=sale.pk, sale__status="open")
-            
-            new_quantity = item.quantity+form_item_sale.cleaned_data['quantity']
 
-            item.quantity=new_quantity
-            item.total=new_quantity*product.value
+            if item.status == "canceled":
+                item.status = ""
+                item.quantity = 0
+                item.total = 0
+            
+            new_quantity = item.quantity + form_item_sale.cleaned_data['quantity']
+
+            item.quantity = new_quantity
+            item.total = new_quantity * product.value
             item.save()
 
             messages.success(request, "Item adicionado com sucesso!")
