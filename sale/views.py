@@ -54,34 +54,16 @@ def add_item_sale(request, pk):
     if form_item_sale.is_valid():
         product = Product.objects.get(id=form_item_sale.cleaned_data['product'].pk)
 
-        try:
-            item = ItemSale.objects.get(product=product.pk, sale=sale.pk, sale__status="open")
+        item_sale = ItemSale.objects.create(
+            product=product,
+            quantity=form_item_sale.cleaned_data['quantity'],
+            unitary_value=product.value,
+            total=form_item_sale.cleaned_data['quantity']*product.value,
+            sale=sale
+        )
 
-            if item.status == "canceled":
-                item.status = ""
-                item.quantity = 0
-                item.total = 0
-            
-            new_quantity = item.quantity + form_item_sale.cleaned_data['quantity']
-
-            item.quantity = new_quantity
-            item.total = new_quantity * product.value
-            item.save()
-
-            messages.success(request, "Item adicionado com sucesso!")
-            return redirect(reverse('sale:sale-detail', args=[sale.pk]))
-
-        except:
-            item_sale = ItemSale.objects.create(
-                product=product,
-                quantity=form_item_sale.cleaned_data['quantity'],
-                unitary_value=product.value,
-                total=form_item_sale.cleaned_data['quantity']*product.value,
-                sale=sale
-            )
-
-            messages.success(request, "Item adicionado com sucesso!")
-            return redirect(reverse('sale:sale-detail', args=[sale.pk]))
+        messages.success(request, "Item adicionado com sucesso!")
+        return redirect(reverse('sale:sale-detail', args=[sale.pk]))
 
 
 @csrf_exempt
