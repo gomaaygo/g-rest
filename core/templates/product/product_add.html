@@ -29,7 +29,7 @@
         <form method="post">{% csrf_token %}
             <div class="form-row">
                 <div class="form-group col-md-2">
-                    <label>Nome</label>
+                    <label>Nome <span class="text-danger">*</span></label>
                     {% render_field form.name class="form-control" %}
                     {% for error in form.name.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
@@ -38,6 +38,7 @@
                 <div class="form-group col-md-2">
                     <label>
                         Categoria
+                        <span class="text-danger">*</span>
                         <a href="{% url 'product:category-add' %}" title="Adicionar Categoria">
                             <i class="fas fa-plus"></i>
                         </a>
@@ -48,14 +49,14 @@
                     {% endfor %}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>Valor</label>
+                    <label>Valor <span class="text-danger">*</span></label>
                     {% render_field form.value class="form-control money2" type="text" %}
                     {% for error in form.value.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>Unidade de Medida</label>
+                    <label>Unidade de Medida <span class="text-danger">*</span></label>
                     {% render_field form.type_of_measure class="form-control" %}
                     <small class="form-text">Ex: l(litro), kg(quilo), g(grama), ml(mililitro)</small>
                     {% for error in form.type_of_measure.errors %}
@@ -63,7 +64,7 @@
                     {% endfor %}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>Tamanho</label>
+                    <label>Tamanho <span class="text-danger">*</span></label>
                     {% render_field form.unit_size class="form-control" %}
                     {% for error in form.unit_size.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
@@ -84,6 +85,9 @@
                 {% for error in form.description.errors %}
                     <span class="help-inline text-danger">{{error}}</span>
                 {% endfor %}
+                <div style="text-align: right;">
+                    <span class="text-danger small">campos obrigatórios *</span>
+                </div>
             </div>
             <div class="form-group" style="text-align: right;">
                 <input type="submit" class="btn btn-primary" value="Salvar">
