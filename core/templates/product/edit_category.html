@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
+                <i class="fas fa-angle-left fa-2x"></i>
+            </button>
+            Editar Categoria
+        </h1>
+    </div>
+    
+    <!-- Content Row -->
+    <div class="container-fluid">
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <form method="post">{% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label>Nome <span class="text-danger">*</span></label>
+                    {% render_field form.name class="form-control" %}
+                    {% for error in form.name.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                    <div style="text-align: right;">
+                        <span class="text-danger small">campos obrigatórios *</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="text-align: right;">
+                <input type="submit" class="btn btn-primary" value="Atualizar">
+            </div>
+        </form>
+    </div>
+    <!-- End Content Row -->
+{% endblock %}

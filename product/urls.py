@@ -17,4 +17,5 @@ urlpatterns = [
     path('input/stock/list/', views.InputOfProductListView.as_view(), name="input-of-product-list"),
     path('output/stock/list/', views.OutputOfProductListView.as_view(), name="output-of-product-list"),
     path('category/list/', views.CategoryListView.as_view(), name="category-list"),
+    path('category/<int:pk>/edit/', views.EditCategoryView.as_view(), name='category-edit'),
 ]
