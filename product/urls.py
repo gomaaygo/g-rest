@@ -16,4 +16,5 @@ urlpatterns = [
     path('category/add/', views.CategoryAddView.as_view(), name="category-add"),
     path('input/stock/list/', views.InputOfProductListView.as_view(), name="input-of-product-list"),
     path('output/stock/list/', views.OutputOfProductListView.as_view(), name="output-of-product-list"),
+    path('category/list/', views.CategoryListView.as_view(), name="category-list"),
 ]
