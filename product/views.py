@@ -122,3 +122,19 @@ class EditProductView(GroupRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, "Produto atualizado com sucesso!")  
         return reverse('product:list')
+
+
+class CategoryListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente', u'Caixa'] 
+    model = Category
+
+
+class EditCategoryView(GroupRequiredMixin, UpdateView):
+    group_required = [u'Gerente', u'Caixa']
+    model = Category
+    template_name = 'product/edit_category.html'
+    form_class = CategoryForm
+
+    def get_success_url(self):
+        messages.success(self.request, "Categoria atualizada com sucesso!")  
+        return reverse('product:category-list')

@@ -97,18 +97,21 @@
                                     <form method="post" action="{% url 'sale:add-item-sale' sale.pk %}">{% csrf_token %}
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label>Produto</label>
+                                                <label>Produto <span class="text-danger">*</span></label>
                                                 {% render_field form_item_sale.product class="form-control" %}
                                                 {% for error in form.product.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
                                                 {% endfor %}
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>Quantidade</label>
+                                                <label>Quantidade <span class="text-danger">*</span></label>
                                                 {% render_field form_item_sale.quantity class="form-control" %}
                                                 {% for error in form.quantity.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
                                                 {% endfor %}
+                                                <div style="text-align: right;">
+                                                    <span class="text-danger small">campos obrigatórios *</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div style="text-align: right;">
@@ -182,18 +185,21 @@
                                     <form method="post" action="{% url 'sale:add-snack' sale.pk %}">{% csrf_token %}
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label>Refeição</label>
+                                                <label>Refeição <span class="text-danger">*</span></label>
                                                 {% render_field form_add_snack.product class="form-control" %}
                                                 {% for error in form_add_snack.product.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
                                                 {% endfor %}
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>Quantidade (g)</label>
+                                                <label>Quantidade (g) <span class="text-danger">*</span></label>
                                                 {% render_field form_add_snack.quantity_snack class="form-control weight" type="text" %}
                                                 {% for error in form_add_snack.quantity_snack.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
                                                 {% endfor %}
+                                                <div style="text-align: right;">
+                                                    <span class="text-danger small">campos obrigatórios *</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div style="text-align: right;">

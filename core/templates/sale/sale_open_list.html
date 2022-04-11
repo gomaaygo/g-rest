@@ -48,7 +48,7 @@
                             <form method="post" action="{% url 'sale:new-sale' %}">{% csrf_token %}
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Fichas Disponíveis</label>
+                                        <label>Fichas Disponíveis <span class="text-danger">*</span></label>
                                         {% render_field form.card class="form-control" %}
                                         {% for error in form.card.errors %}
                                             <span class="help-inline text-danger">{{error}}</span>
