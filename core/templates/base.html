@@ -62,6 +62,8 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
+                {% if request.user.account.type_user == "manager" %}
+
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Contas
@@ -84,6 +86,8 @@
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
+
+                {% endif %}
 
                 {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
 

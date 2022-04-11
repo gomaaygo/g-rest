@@ -106,3 +106,19 @@ class AccountDetailView(DetailView):
 class AccountListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente'] 
     model = Account
+
+
+@csrf_exempt
+def system_permission(request, pk):
+    account = Account.objects.get(id=pk)
+
+    if account.is_active == True:
+        account.is_active = False
+        messages.success(request, "Usuário restrito com sucesso!")
+    else:
+        account.is_active = True
+        messages.success(request, "Permissão concedida ao usuário com sucesso!")
+    
+    account.save()
+    
+    return redirect(reverse('account:list'))
