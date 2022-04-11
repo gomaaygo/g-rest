@@ -50,7 +50,7 @@ class Stock(models.Model):
                         null=False, blank=False, default=0,
                         validators=[MinValueValidator(0)])
     quantity_min = models.PositiveIntegerField(verbose_name="Quantidade Mínima", 
-                        null=False, blank=False, default=0, 
+                        null=True, blank=True, default=0, 
                         validators=[MinValueValidator(0)])
 
 
