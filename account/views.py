@@ -7,11 +7,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView
-from django.views.generic import UpdateView, TemplateView
+from django.views.generic import UpdateView, TemplateView, ListView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import Group
 from django.views.generic.detail import DetailView
 from django.views.decorators.csrf import csrf_exempt
+from account.permissions import GroupRequiredMixin
 
 from .models import Account
 from .forms import AccountForm
@@ -58,6 +59,7 @@ class AccountCreateView(CreateView):
             group = get_object_or_404(Group, name="Gerente")
 
         self.object.password = make_password(self.request.POST["password"])
+        self.object.is_active = False
         self.object.groups.add(group)
         self.object.save()
 
@@ -99,3 +101,8 @@ class AccountDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.get_account()
         return context
+
+
+class AccountListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente'] 
+    model = Account
