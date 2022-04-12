@@ -53,7 +53,11 @@
                                     <td>{{stock.product.category}}</td>
                                     <td>{{stock.product.unit_size}}{{stock.product.type_of_measure}}</td>
                                     <td>{{stock.quantity}}</td>
-                                    <td>{{stock.quantity_min}}</td>
+                                    <td>{% if stock.quantity_min %}
+                                            {{stock.quantity_min}}
+                                        {% else %}
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
