@@ -19,6 +19,8 @@ class CloseSaleForm(forms.ModelForm):
 
 
 class ItemSaleForm(forms.ModelForm):
+    quantity = forms.IntegerField(label="Quantidade", min_value=1, required=True)
+
     class Meta:
         model = ItemSale
         fields = '__all__'
@@ -27,6 +29,7 @@ class ItemSaleForm(forms.ModelForm):
 
 class SnackForm(forms.ModelForm):
     product = forms.ModelChoiceField(label="Refeição", queryset=Product.objects.filter(category__name="Refeição"))
+    quantity_snack = forms.IntegerField(required=True)
 
     class Meta:
         model = ItemSale

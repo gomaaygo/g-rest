@@ -192,7 +192,7 @@
                                                 {% endfor %}
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>Peso kg/g</label>
+                                                <label>Peso kg/g <span class="text-danger">*</span></label>
                                                 {% render_field form_add_snack.quantity_snack class="form-control weight" type="text" %}
                                                 {% for error in form_add_snack.quantity_snack.errors %}
                                                     <span class="help-inline text-danger">{{error}}</span>
