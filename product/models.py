@@ -21,18 +21,27 @@ class Product(models.Model):
         ("ml", "Mililitro"),
         ("l", "Litro"),
         ("g", "Grama"),
+        ("un", "Unidade")
     )
+    PRODUCT_TYPE = (
+        ("consumption", "Consumo"),
+        ("sale", "Venda"),
+    )
+
     category = models.ForeignKey(Category, verbose_name=("Categoria"), 
                     null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField("Nome", max_length=200, null=False, blank=False)
     description = models.TextField("Descrição", null=True, blank=True)
     value = models.DecimalField("Valor", decimal_places=2, max_digits=14,
-                        validators=[MinValueValidator(0.00)], null=False)
+                        validators=[MinValueValidator(0.00)], null=True, blank=True)
     type_of_measure = models.CharField("Unidade de Medida", max_length=2, 
                         null=True, blank=True, choices=TYPE_OF_MEASURE)
     unit_size = models.FloatField("Tamanho da Unidade", null=True, 
                         blank=True, validators=[MinValueValidator(0)])
-
+    purchase_price = models.DecimalField("Preço de Compra", decimal_places=2, max_digits=14,
+                        validators=[MinValueValidator(0.00)], null=False, default=0)
+    type_product = models.CharField("Tipo de Produto", max_length=11, null=False, 
+                    blank=False, choices=PRODUCT_TYPE, default="sale")
 
     class Meta:
         verbose_name = "Produto"
