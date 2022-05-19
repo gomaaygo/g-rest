@@ -19,14 +19,13 @@
         <!-- Imagem e texto -->
         <nav class="navbar navbar-light bg-light">
             <a class="navbar-brand" href="#">
-            <!-- <img src="/docs/4.1/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt=""> -->
-            Cristal
+                <img src="{% static 'img/cristal-logo.png' %}" width="100" height="100" class="d-inline-block align-top" alt="">
             </a>
         </nav>
         <div class="container">
             <form method="POST">
                 {% csrf_token %}
-                <div class="text-center mb-5 mt-5">
+                <div class="text-center mb-5 mt-0">
                     <!-- <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
                     <h1 class="h3 mb-3 font-weight-normal">Nova Conta</h1>
                     {% if form.errors %}

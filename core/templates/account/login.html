@@ -22,9 +22,11 @@
   <body>
     <form class="form-signin" method="POST">
       {% csrf_token %}
-      <div class="text-center mb-4">
+      <div class="text-center mb-0">
         <!-- <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
-        <h1 class="h3 mb-3 font-weight-normal">CRISTAL</h1>
+        <div>
+          <img src="{% static 'img/cristal-logo.png' %}" alt="" width="200px" height="200px">
+        </div>
         {% if messages %}
         <div>
             {% for message in messages %}
@@ -40,7 +42,6 @@
             {% endfor %}
         </div>
         {% endif %}
-        <p>Preencha o formulário com suas credenciais para acessar o sistema!</p>
       </div>
       <div class="form-group">
         <label>Usuário</label>
