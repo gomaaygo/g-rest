@@ -23,11 +23,11 @@ class ProductAddView(GroupRequiredMixin, CreateView):
         messages.success(self.request, self.success_message)
         product = form.save(commit=False)
         product.save()
-        if product.category.name != "Refeição":
-            stock = Stock.objects.create(
-                product=Product.objects.get(pk=product.pk),
-                quantity_min=form.cleaned_data['quantity_min'],
-            )
+        
+        stock = Stock.objects.create(
+            product=Product.objects.get(pk=product.pk),
+            quantity_min=form.cleaned_data['quantity_min'],
+        )
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
