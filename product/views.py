@@ -23,7 +23,7 @@ class ProductAddView(GroupRequiredMixin, CreateView):
         messages.success(self.request, self.success_message)
         product = form.save(commit=False)
         product.save()
-        
+
         stock = Stock.objects.create(
             product=Product.objects.get(pk=product.pk),
             quantity_min=form.cleaned_data['quantity_min'],
@@ -80,6 +80,7 @@ class OutputOfProductStockView(GroupRequiredMixin, CreateView):
 class StockListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente', u'Caixa'] 
     model = Stock
+    queryset = Stock.objects.filter(product__type_product="sale")
 
 
 class CategoryAddView(GroupRequiredMixin, CreateView):
