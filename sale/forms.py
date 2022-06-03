@@ -19,6 +19,8 @@ class CloseSaleForm(forms.ModelForm):
 
 
 class ItemSaleForm(forms.ModelForm):
+    product = forms.ModelChoiceField(label="Produto", queryset=Product.objects.filter(type_product="sale"))
+
     class Meta:
         model = ItemSale
         fields = '__all__'
