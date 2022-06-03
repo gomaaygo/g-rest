@@ -11,7 +11,7 @@
             <button type="button" class="btn" onclick="window.history.back();" title="Voltar">
                 <i class="fas fa-angle-left fa-2x"></i>
             </button>
-            Editar Produto
+            Atualizar Produto
         </h1>
     </div>
     
@@ -35,10 +35,9 @@
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-4">
                     <label>
                         Categoria
-                        <span class="text-danger">*</span>
                         <a href="{% url 'product:category-add' %}" title="Adicionar Categoria">
                             <i class="fas fa-plus"></i>
                         </a>
@@ -49,24 +48,39 @@
                     {% endfor %}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>Valor <span class="text-danger">*</span></label>
-                    {% render_field form.value class="form-control money2" type="text" %}
-                    {% for error in form.value.errors %}
-                        <span class="help-inline text-danger">{{error}}</span>
-                    {% endfor %}
-                </div>
-                <div class="form-group col-md-2">
                     <label>Unidade de Medida <span class="text-danger">*</span></label>
                     {% render_field form.type_of_measure class="form-control" %}
-                    <small class="form-text">Ex: l(litro), kg(quilo), g(grama), ml(mililitro)</small>
                     {% for error in form.type_of_measure.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
                 </div>
                 <div class="form-group col-md-2">
-                    <label>Tamanho <span class="text-danger">*</span></label>
+                    <label>Tamanho</label>
                     {% render_field form.unit_size class="form-control" %}
                     {% for error in form.unit_size.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Tipo de Produto <span class="text-danger">*</span></label>
+                    {% render_field form.type_product class="form-control" %}
+                    {% for error in form.type_product.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>  
+                <div class="form-group col-md-4">
+                    <label>Valor de Compra <span class="text-danger">*</span></label>
+                    {% render_field form.purchase_price class="form-control money2" type="text" %}
+                    {% for error in form.purchase_price.errors %}
+                        <span class="help-inline text-danger">{{error}}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Valor de Venda</label>
+                    {% render_field form.value class="form-control money2" type="text" %}
+                    {% for error in form.value.errors %}
                         <span class="help-inline text-danger">{{error}}</span>
                     {% endfor %}
                 </div>
@@ -82,7 +96,7 @@
                 </div>
             </div>
             <div class="form-group" style="text-align: right;">
-                <input type="submit" class="btn btn-primary" value="Salvar">
+                <input type="submit" class="btn btn-primary" value="Atualizar">
             </div>
         </form>
     </div>
