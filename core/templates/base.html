@@ -134,12 +134,42 @@
                     </a>
                     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{% url 'product:input-product-stock' %}">Entrada</a>
-                            <a class="collapse-item" href="{% url 'product:output-product-stock' %}">Saída</a>
                             <a class="collapse-item" href="{% url 'product:stock-list' %}">Visualizar Estoque</a>
                             {% if request.user.account.type_user == "manager" %}
+                                <a class="collapse-item" href="#">Entrada</a>
                                 <a class="collapse-item" href="{% url 'product:input-of-product-list' %}">Relatório de Entrada</a>
                                 <a class="collapse-item" href="{% url 'product:output-of-product-list' %}">Relatório de Saída</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+                
+                {% endif %}
+
+                {% if request.user.account.type_user == "manager" or request.user.account.type_user == "cashier" %}
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    DEPÓSITO
+                </div>
+
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage"
+                        aria-expanded="true" aria-controls="collapsePages">
+                        <i class="fas fa-cubes"></i>
+                        <span>Gerenciar Depósito</span>
+                    </a>
+                    <div id="collapsePage" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{% url 'product:input-product-stock' %}">Entrada</a>
+                            <a class="collapse-item" href="{% url 'product:output-product-stock' %}">Saída</a>
+                            <a class="collapse-item" href="#">Visualizar Depósito</a>
+                            {% if request.user.account.type_user == "manager" %}
+                                <a class="collapse-item" href="#">Relatório de Entrada</a>
+                                <a class="collapse-item" href="#">Relatório de Saída</a>
                             {% endif %}
                         </div>
                     </div>
