@@ -64,7 +64,10 @@ class ProductForm(forms.ModelForm):
         return purchase_price
 
 
-class InputOfProductForm(forms.ModelForm):
+class EntryOfSaleProductIntoStockForm(forms.ModelForm):
+    # Formulário de entrada de produtos para venda no estoque
+    product = forms.ModelChoiceField(label="product", queryset=Product.objects.filter(type_product="sale").order_by("name"))
+    
     class Meta:
         model = InputOfProduct
         fields = ['product', 'quantity', 'expiration_date']

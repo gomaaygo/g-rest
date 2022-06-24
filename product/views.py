@@ -8,7 +8,7 @@ from account.permissions import GroupRequiredMixin
 from django.views.generic import UpdateView
 
 from .models import Product, Stock, InputOfProduct, OutputOfProduct, Category
-from .forms import ProductForm, InputOfProductForm, OutputOfProductForm, CategoryForm
+from .forms import ProductForm, EntryOfSaleProductIntoStockForm, OutputOfProductForm, CategoryForm
 
 # Create your views here.
 class ProductAddView(GroupRequiredMixin, CreateView):
@@ -39,22 +39,21 @@ class ProductListView(ListView):
     model = Product
 
 
-class InputOfProductStockView(GroupRequiredMixin, CreateView):
+class EntryOfSaleProductIntoStockView(GroupRequiredMixin, CreateView):
     group_required = [u'Gerente', u'Caixa']
     template_name = "product/input_of_product.html"
     model = InputOfProduct
-    form_class = InputOfProductForm
+    form_class = EntryOfSaleProductIntoStockForm
     success_url = reverse_lazy('product:input-product-stock')
     success_message = "Produto adicionado ao estoque!"
 
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
         input_product = form.save(commit=False)
-        # input_product.save()
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(InputOfProductStockView, self).get_context_data(**kwargs)
+        context = super(EntryOfSaleProductIntoStockView, self).get_context_data(**kwargs)
         return context
 
 
@@ -62,7 +61,7 @@ class OutputOfProductStockView(GroupRequiredMixin, CreateView):
     group_required = [u'Gerente', u'Caixa']
     template_name = "product/output_of_product.html"
     model = OutputOfProduct
-    form_class = OutputOfProductForm
+    form_class = EntryOfSaleProductIntoStockForm
     success_url = reverse_lazy('product:output-product-stock')
     success_message = "Produto retirado do estoque!"
 
