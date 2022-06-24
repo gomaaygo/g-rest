@@ -112,6 +112,18 @@ class OutputOfProductSaleListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente', u'Caixa']
     model = OutputOfProduct
     queryset = OutputOfProduct.objects.filter(product__type_product="sale").order_by("-departure_date")
+    
+    
+class InputOfProductConsumptionListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente', u'Caixa']
+    model = InputOfProduct
+    queryset = InputOfProduct.objects.filter(product__type_product="consumption").order_by("-entry_date")
+
+
+class OutputOfProductConsumptionListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente', u'Caixa']
+    model = OutputOfProduct
+    queryset = OutputOfProduct.objects.filter(product__type_product="consumption").order_by("-departure_date")
 
 
 class EditProductView(GroupRequiredMixin, UpdateView):
