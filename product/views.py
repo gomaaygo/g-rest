@@ -80,6 +80,22 @@ class StockListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente', u'Caixa'] 
     model = Stock
     queryset = Stock.objects.filter(product__type_product="sale")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type_list'] = "Estoque"
+        return context
+    
+
+class DepositListView(GroupRequiredMixin, ListView):
+    group_required = [u'Gerente', u'Caixa'] 
+    model = Stock
+    queryset = Stock.objects.filter(product__type_product="consumption")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type_list'] = "Depósito"
+        return context
 
 
 class CategoryAddView(GroupRequiredMixin, CreateView):
