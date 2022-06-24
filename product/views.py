@@ -105,13 +105,13 @@ class CategoryAddView(GroupRequiredMixin, CreateView):
 class InputOfProductSaleListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente', u'Caixa']
     model = InputOfProduct
-    queryset = InputOfProduct.objects.all().order_by("-entry_date")
+    queryset = InputOfProduct.objects.filter(product__type_product="sale").order_by("-entry_date")
 
 
 class OutputOfProductSaleListView(GroupRequiredMixin, ListView):
     group_required = [u'Gerente', u'Caixa']
     model = OutputOfProduct
-    queryset = OutputOfProduct.objects.all().order_by("-departure_date")
+    queryset = OutputOfProduct.objects.filter(product__type_product="sale").order_by("-departure_date")
 
 
 class EditProductView(GroupRequiredMixin, UpdateView):
