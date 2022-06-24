@@ -164,7 +164,7 @@
                     </a>
                     <div id="collapsePage" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{% url 'product:input-product-stock' %}">Entrada</a>
+                            <a class="collapse-item" href="{% url 'product:input-product-deposit' %}">Entrada</a>
                             <a class="collapse-item" href="{% url 'product:output-product-stock' %}">Saída</a>
                             <a class="collapse-item" href="{% url 'product:deposit-list' %}">Visualizar Depósito</a>
                             {% if request.user.account.type_user == "manager" %}

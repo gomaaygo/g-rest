@@ -71,6 +71,15 @@ class EntryOfSaleProductIntoStockForm(forms.ModelForm):
     class Meta:
         model = InputOfProduct
         fields = ['product', 'quantity', 'expiration_date']
+        
+
+class EntryOfConsumptionProductIntoStockForm(forms.ModelForm):
+    # Formulário de entrada de produtos para consumo no estoque
+    product = forms.ModelChoiceField(label="product", queryset=Product.objects.filter(type_product="consumption").order_by("name"))
+    
+    class Meta:
+        model = InputOfProduct
+        fields = ['product', 'quantity', 'expiration_date']
 
 
 class OutputOfProductForm(forms.ModelForm):
