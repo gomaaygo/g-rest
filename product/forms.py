@@ -83,6 +83,8 @@ class EntryOfConsumptionProductIntoStockForm(forms.ModelForm):
 
 
 class OutputOfProductForm(forms.ModelForm):
+    product = forms.ModelChoiceField(label="product", queryset=Product.objects.filter(type_product="consumption").order_by("name"))
+    
     class Meta:
         model = OutputOfProduct
         fields = ['product', 'quantity']

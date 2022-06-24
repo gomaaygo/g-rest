@@ -79,22 +79,21 @@ class EntryOfConsumptionProductIntoStockView(GroupRequiredMixin, CreateView):
         return context
 
 
-class OutputOfProductStockView(GroupRequiredMixin, CreateView):
+class OutputOfConsumptionProductIntoStockView(GroupRequiredMixin, CreateView):
     group_required = [u'Gerente', u'Caixa']
     template_name = "product/output_of_product.html"
     model = OutputOfProduct
-    form_class = EntryOfSaleProductIntoStockForm
-    success_url = reverse_lazy('product:output-product-stock')
-    success_message = "Produto retirado do estoque!"
+    form_class = OutputOfProductForm
+    success_url = reverse_lazy('product:output-product-deposit')
+    success_message = "Produto retirado do depósito!"
 
     def form_valid(self, form):
         messages.success(self.request, self.success_message)
         input_product = form.save(commit=False)
-        # input_product.save()
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super(OutputOfProductStockView, self).get_context_data(**kwargs)
+        context = super(OutputOfConsumptionProductIntoStockView, self).get_context_data(**kwargs)
         return context
 
 
